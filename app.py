@@ -8,25 +8,17 @@ st.markdown(
         gap: 10px;
     }
     .stTabs [data-baseweb="tab"] {
+        background-color: #f0f2f6;
         border-radius: 10px 10px 0 0;
         padding: 10px 20px;
         margin-right: 5px;
-        background-color: #f0f2f6;
     }
     .stTabs [data-baseweb="tab"]:hover {
         background-color: #d1d5db;
     }
     .stTabs [aria-selected="true"] {
-        color: white;
-    }
-    .stTabs [aria-selected="true"]:nth-child(1) {
         background-color: #4CAF50;
-    }
-    .stTabs [aria-selected="true"]:nth-child(2) {
-        background-color: #2196F3;
-    }
-    .stTabs [aria-selected="true"]:nth-child(3) {
-        background-color: #FF9800;
+        color: white;
     }
     </style>
     """,
