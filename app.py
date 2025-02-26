@@ -182,7 +182,7 @@ with tab3:
     col5.metric("SIN OFERTA%", f"{so}")
     col6.metric("DESIERTAS", f"{des}")
     col7.metric("SIMULTÁNEAS", f"{absim}")
-
+    }
     # Mostrar gráficos interactivos
     st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="demanda_histogram")
     st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="demanda_pie")
