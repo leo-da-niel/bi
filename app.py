@@ -79,8 +79,14 @@ with tab1:
     selected_status = st.selectbox("Ingrese el estatus", list(status_options.keys()), key="resumen_status")
     stat = status_options[selected_status]
 
+    selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="resumen_abasto")
+    abastecimiento = abasto_options[selected_abasto]
+
     selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="resumen_type")
     ty = type_options[selected_type]
+
+    clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="resumen_clave")
+    cl = [s.strip() for s in clave_input.split(',')]
 
     # Crear un contenedor para el recuadro
     with st.container():
@@ -95,8 +101,6 @@ with tab1:
         col6.metric("SIN OFERTA%", f"{so}")
         col7.metric("SIMULTÁNEAS", f"{absim}")
 
-    clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="resumen_clave")
-    cl = [s.strip() for s in clave_input.split(',')]
 
     # Mostrar gráficos 
     st.plotly_chart(fig_histogram_oferta, key="resumen_histogram_oferta")
