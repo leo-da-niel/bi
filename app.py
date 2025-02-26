@@ -20,14 +20,20 @@ ab_s = simultaneo['CLAVES'].unique()
 # Definir funciones para crear gráficos
 
 
-def crear_pie(data) #, names, title):
-    return px.pie(data) #names, title)
+def crear_pie(data)
+#, names, title):
+    return px.pie(data)
+#names, title)
 
-def crear_hist(data) # , x, title):
-    return px.histogram(data) # , x, title)
+def crear_hist(data)
+#, x, title):
+    return px.histogram(data
+# , x, title)
 
-def crear_líneas(data) #, x, y, color):
-    return px.line(data) #, x, y, color)
+def crear_líneas(data)
+#, x, y, color):
+    return px.line(data)
+#, x, y, color)
 
 
 #def crear_pie_demanda(data):
