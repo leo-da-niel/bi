@@ -30,7 +30,7 @@ def crear_pie(data):
 
 
 def crear_hist(data):
-    return px.histogram(data
+    return px.histogram(data)
 
 
 def crear_líneas(data):
