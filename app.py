@@ -28,13 +28,21 @@ des = len(demanda[demanda['estatus'] == 'desierta'])
 so = len(demanda[demanda['estatus'] == 'sin oferta'])
 absim = len(demanda[demanda['estatus'] == 'simultáneo'])
 
-# Crear gráficos con Plotly
-fig_histogram_oferta = px.histogram(oferta, x="proveedor", title="Distribución de Adjudicación por Proveedor")
-fig_pie_oferta = px.pie(oferta, names='estatus', title='Distribución de Estatus de Oferta')
-fig_hist_of_ad = px.histogram(oferta, x='adjudicación (%)', title='Distribución de Adjudicación (%)')
+# Definir funciones para crear gráficos
+def crear_histograma_oferta(data):
+    return px.histogram(data, x="proveedor", title="Distribución de Adjudicación por Proveedor")
 
-fig_histogram_demanda = px.histogram(demanda, x="proveedores", title="Distribución de Proveedores")
-fig_pie_demanda = px.pie(demanda, names='estatus', title='Distribución de Estatus de Demanda')
+def crear_pie_oferta(data):
+    return px.pie(data, names='estatus', title='Distribución de Estatus de Oferta')
+
+def crear_hist_of_ad(data):
+    return px.histogram(data, x='adjudicación (%)', title='Distribución de Adjudicación (%)')
+
+def crear_histograma_demanda(data):
+    return px.histogram(data, x="proveedores", title="Distribución de Proveedores")
+
+def crear_pie_demanda(data):
+    return px.pie(data, names='estatus', title='Distribución de Estatus de Demanda')
 
 # Configuración de la página
 st.set_page_config(page_title="Dashboard", layout="wide")
@@ -44,7 +52,6 @@ st.image("header.png", use_container_width=True)
 
 # Opciones
 clave_options = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in claves_unicas}}
-
 
 instituto_options = {
     "IMSS": "IMSS",
@@ -95,6 +102,10 @@ with tab1:
     clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="resumen_clave")
     cl = [s.strip() for s in clave_input.split(',')]
 
+    # Filtrar datos
+    datos_filtrados_oferta = oferta[oferta['clave'].isin(cl)]
+    datos_filtrados_demanda = demanda[demanda['clave'].isin(cl)]
+
     # Crear un contenedor para el recuadro
     with st.container():
         col1, col2, col3, col4 = st.columns(4)
@@ -109,13 +120,13 @@ with tab1:
         col7.metric("SIMULTÁNEAS", f"{absim}")
 
     # Mostrar gráficos 
-    st.plotly_chart(fig_histogram_oferta, key="resumen_histogram_oferta")
-    st.plotly_chart(fig_pie_oferta, key="resumen_pie_oferta")
-    st.plotly_chart(fig_histogram_demanda, key="resumen_histogram_demanda")
-    st.plotly_chart(fig_pie_demanda, key="resumen_pie_demanda") 
-    st.plotly_chart(fig_hist_of_ad, key="resumen_hist_of_ad")
+    st.plotly_chart(crear_histograma_oferta(datos_filtrados_oferta), key="resumen_histogram_oferta")
+    st.plotly_chart(crear_pie_oferta(datos_filtrados_oferta), key="resumen_pie_oferta")
+    st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="resumen_histogram_demanda")
+    st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="resumen_pie_demanda") 
+    st.plotly_chart(crear_hist_of_ad(datos_filtrados_oferta), key="resumen_hist_of_ad")
 
-# Pestaña 2: Proveedores
+# Pestaña 2: Oferta
 with tab2:
     clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="oferta_clave")
     cl = [s.strip() for s in clave_input.split(',')]
@@ -132,11 +143,14 @@ with tab2:
     selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="oferta_type")
     ty = type_options[selected_type]
 
-    # Mostrar gráficos específicos de la oferta
-    st.plotly_chart(fig_histogram_oferta, key="oferta_histogram_oferta")
-    st.plotly_chart(fig_pie_oferta, key="oferta_pie_oferta")
+    # Filtrar datos
+    datos_filtrados_oferta = oferta[oferta['clave'].isin(cl)]
 
-# Pestaña 3: Instituto
+    # Mostrar gráficos específicos de la oferta
+    st.plotly_chart(crear_histograma_oferta(datos_filtrados_oferta), key="oferta_histogram_oferta")
+    st.plotly_chart(crear_pie_oferta(datos_filtrados_oferta), key="oferta_pie_oferta")
+
+# Pestaña 3: Demanda
 with tab3:
     selected_instituto = st.selectbox("Ingrese el Instituto:", list(instituto_options.keys()), key="demanda_instituto")
     inst = instituto_options[selected_instituto]
@@ -153,10 +167,16 @@ with tab3:
     selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="demanda_type")
     ty = type_options[selected_type]
 
-    # Mostrar gráficos específicos de la demanda
-    st.plotly_chart(fig_histogram_demanda, key="demanda_histogram_demanda")
-    st.plotly_chart(fig_pie_demanda, key="demanda_pie_demanda")
+    # Filtrar datos
+    datos_filtrados_demanda = demanda[demanda['clave'].isin(cl)]
 
+    # Mostrar gráficos específicos de la demanda
+    st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="demanda_histogram_demanda")
+    st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="demanda_pie_demanda")
+
+    col4, col5, col6, col7 = st.columns(4)
+    col4.metric("ADJUDICADAS", f"{adj}")
+    col5.metric("SIN OFERTA%", f"{
     col4, col5, col6, col7 = st.columns(4)
     col4.metric("ADJUDICADAS", f"{adj}")
     col5.metric("SIN OFERTA%", f"{so}")
@@ -164,8 +184,8 @@ with tab3:
     col7.metric("SIMULTÁNEAS", f"{absim}")
 
     # Mostrar gráficos interactivos
-    st.plotly_chart(fig_histogram_demanda, key="demanda_histogram")
-    st.plotly_chart(fig_pie_demanda, key="demanda_pie")
+    st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="demanda_histogram")
+    st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="demanda_pie")
 
     st.header("Demanda")
     st.write(demanda.head())
