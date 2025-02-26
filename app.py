@@ -18,20 +18,20 @@ ab_u = unico['CLAVES'].unique()
 ab_s = simultaneo['CLAVES'].unique()
 
 # Definir funciones para crear gráficos
-def crear_histograma_oferta(data):
-    return px.histogram(data, x="proveedor", title="Distribución de Adjudicación por Proveedor")
 
-def crear_pie_oferta(data):
-    return px.pie(data, names='estatus', title='Distribución de Estatus de Oferta')
 
-def crear_hist_of_ad(data):
-    return px.histogram(data, x='adjudicación (%)', title='Distribución de Adjudicación (%)')
+def crear_pie(data, names, title):
+    return px.pie(data, names, title)
 
-def crear_histograma_demanda(data):
-    return px.histogram(data, x="proveedores", title="Distribución de Proveedores")
+def crear_hist(data, x, title):
+    return px.histogram(data, x, title)
 
-def crear_pie_demanda(data):
-    return px.pie(data, names='estatus', title='Distribución de Estatus de Demanda')
+def crear_líneas(df, x, y, color):
+    return px.line(df, x, y, color)
+
+
+#def crear_pie_demanda(data):
+ #   return px.pie(data, names='estatus', title='Distribución de Estatus de Demanda')
 
 # Configuración de la página
 st.set_page_config(page_title="Dashboard", layout="wide")
@@ -107,8 +107,7 @@ with tab1:
 
 # Pestaña 2: Oferta
 with tab2:
-    clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="oferta_clave")
-    cl = [s.strip() for s in clave_input.split(',')]
+    px.histogram(df["PROVEEDOR"],  title="Distribución de Adjudicación por Proveedor")
 
     selected_proveedor = st.selectbox("Ingrese el proveedor", list(proveedor_options.keys()), key="oferta_proveedor")
     prov = proveedor_options[selected_proveedor]
@@ -128,11 +127,33 @@ with tab2:
 
 # Pestaña 3: Demanda
 with tab3:
+    px.histogram(df["PROVEEDOR"],  title="Distribución de Adjudicación por Proveedor")
+    
     selected_instituto = st.selectbox("Ingrese el Instituto:", list(instituto_options.keys()), key="demanda_instituto")
     inst = instituto_options[selected_instituto]
+    inst25 = int+"_25"
+    inst26 = int+"_26"
+    col1, col2 = st.columns(2)
 
-    clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="demanda_clave")
-    cl = [s.strip() for s in clave_input.split(',')]
+    with col1:
+    fig1 = px.bar(df_grouped[df_grouped["inst25"] > 1000000], x="CLAVES", y="inst25", title="CANTIDADES DEMANDADAS POR IMSS PARA 2025")
+    fig2 = px.bar(df_grouped[(df_grouped["inst25"] > 50000) & (df_grouped["inst25"] < 1000000)], x="CLAVES", y="inst25")
+    fig3 = px.bar(df_grouped[(df_grouped["inst25"] > 1000) & (df_grouped["inst25"] < 50000)], x="CLAVES", y="inst25")
+    fig4 = px.bar(df_grouped[(df_grouped["inst25"] > 0) & (df_grouped["inst25"] < 1000)], x="CLAVES", y="inst25")
+    st.write(fig1)
+    st.write(fig2)
+    st.write(fig3)
+    st.write(fig4)
+
+    with col2:
+    fig5 = px.bar(df_grouped[df_grouped["inst26"] > 1000000], x="CLAVES", y="inst26", title="CANTIDADES DEMANDADAS POR IMSS PARA 2025")
+    fig6 = px.bar(df_grouped[(df_grouped["inst26"] > 50000) & (df_grouped["inst26"] < 1000000)], x="CLAVES", y="inst26")
+    fig7 = px.bar(df_grouped[(df_grouped["inst26"] > 1000) & (df_grouped["inst26"] < 50000)], x="CLAVES", y="inst26")
+    fig8 = px.bar(df_grouped[(df_grouped["inst26"] > 0) & (df_grouped["inst26"] < 1000)], x="CLAVES", y="inst26")
+    st.write(fig5)
+    st.write(fig6)
+    st.write(fig7)
+    st.write(fig8)
 
     selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="demanda_abasto")
     abastecimiento = abasto_options[selected_abasto]
