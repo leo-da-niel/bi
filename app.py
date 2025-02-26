@@ -47,14 +47,15 @@ clave_options = {"General": "General", **{clave: clave for clave in claves_unica
 
 
 instituto_options = {
-    "imss": "imss",
-    "imssbienestar": "imssbienestar",
-    "issste": "issste",
-    "semar": "semar",
-    "cenaprece": "cenaprece",
-    "censida": "censida",
-    "cnegrs": "cnegrs"
-    "pemex": "pemex"
+    "IMSS": "IMSS",
+    "IMSS BIENESTAR": "IMSS BIENESTAR",
+    "ISSSTE": "ISSSTE",
+    "SEMAR": "SEMAR",
+    "CENAPRECE": "CENAPRECE",
+    "CENISDA": "CENISDA",
+    "CNEGRS": "CNEGRS",
+    "CONASAMA": "CONASAMA",
+    "PEMEX": "PEMEX"
 }
 proveedor_options = {proveedor: proveedor for proveedor in proveedores_unicos}
 
