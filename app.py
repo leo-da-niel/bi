@@ -43,7 +43,7 @@ st.set_page_config(page_title="Dashboard", layout="wide")
 st.image("header.png", use_container_width=True)
 
 # Opciones
-clave_options = {claves: claves for claves in claves_unicas}
+clave_options = {"General": claves_unicas, claves: claves for claves in claves_unicas}
 
 instituto_options = {
     "imss": "imss",
