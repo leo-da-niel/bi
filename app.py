@@ -117,6 +117,12 @@ with tab2:
     selected_status = st.selectbox("Ingrese el estatus", list(status_options.keys()), key="oferta_status")
     stat = status_options[selected_status]
 
+    selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="oferta_abasto")
+    abastecimiento = abasto_options[selected_abasto]
+
+    selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="oferta_type")
+    ty = type_options[selected_type]
+
     # Mostrar gráficos específicos de la oferta
     st.plotly_chart(fig_histogram_oferta, key="oferta_histogram_oferta")
     st.plotly_chart(fig_pie_oferta, key="oferta_pie_oferta")
@@ -131,6 +137,9 @@ with tab3:
 
     selected_status = st.selectbox("Ingrese el estatus", list(status_options.keys()), key="demanda_status")
     stat = status_options[selected_status]
+
+    selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="demanda_abasto")
+    abastecimiento = abasto_options[selected_abasto]
 
     selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="demanda_type")
     ty = type_options[selected_type]
