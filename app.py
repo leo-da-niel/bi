@@ -43,12 +43,17 @@ st.set_page_config(page_title="Dashboard", layout="wide")
 st.image("header.png", use_container_width=True)
 
 # Opciones
-clave_options = {"General": claves_unicas, claves: claves for claves in claves_unicas}
+clave_options = {"General": "General", **{clave: clave for clave in claves_unicas}}
+
 
 instituto_options = {
     "imss": "imss",
     "imssbienestar": "imssbienestar",
     "issste": "issste",
+    "semar": "semar",
+    "cenaprece": "cenaprece",
+    "censida": "censida",
+    "cnegrs": "cnegrs"
     "pemex": "pemex"
 }
 proveedor_options = {proveedor: proveedor for proveedor in proveedores_unicos}
