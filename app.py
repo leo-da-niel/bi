@@ -58,12 +58,12 @@ abasto_options = {
     "Abastecimiento simultáneo": ab_s,
     "Abastecimiento único": ab_u
 }
-#status_options = {
- #   "Desiertas": "desierta",
-  #  "Adjudicación Única": "único",
-   # "Abastecimiento Simultáneo": "simultáneo",
-    #"Sin Oferta": "sin oferta"
-#}
+status_options = {
+    "Desiertas": "desierta",
+    "Adjudicación Única": "único",
+    "Abastecimiento Simultáneo": "simultáneo",
+    "Sin Oferta": "sin oferta"
+}
 
 type_options = {
     "General": claves_unicas,
