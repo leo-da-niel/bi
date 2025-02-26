@@ -99,7 +99,7 @@ with tab1:
         col7.metric("SIMULTÁNEAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] < 1])}")
 
     # Mostrar gráficos 
-    st.plotly_chart(crear_histograma_oferta(datos_filtrados_oferta), key="resumen_histogram_oferta")
+    #st.plotly_chart(crear_histograma_oferta(datos_filtrados_oferta), key="resumen_histogram_oferta")
     st.plotly_chart(crear_pie_oferta(datos_filtrados_oferta), key="resumen_pie_oferta")
     st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="resumen_histogram_demanda")
     st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="resumen_pie_demanda") 
