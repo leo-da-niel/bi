@@ -176,9 +176,6 @@ with tab3:
 
     col4, col5, col6, col7 = st.columns(4)
     col4.metric("ADJUDICADAS", f"{adj}")
-    col5.metric("SIN OFERTA%", f"{
-    col4, col5, col6, col7 = st.columns(4)
-    col4.metric("ADJUDICADAS", f"{adj}")
     col5.metric("SIN OFERTA%", f"{so}")
     col6.metric("DESIERTAS", f"{des}")
     col7.metric("SIMULTÁNEAS", f"{absim}")
