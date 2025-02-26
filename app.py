@@ -57,6 +57,7 @@ abasto_options = {
     "Abastecimiento único": ab_u
 }
 status_options = {
+    "General": claves_unicas,
     "Desiertas": "desierta",
     "Adjudicación Única": "único",
     "Abastecimiento Simultáneo": "simultáneo",
@@ -106,7 +107,7 @@ with tab1:
     st.plotly_chart(fig_pie_demanda, key="resumen_pie_demanda") 
     st.plotly_chart(fig_hist_of_ad, key="resumen_hist_of_ad")
 
-# Pestaña 2: Oferta
+# Pestaña 2: Proveedores
 with tab2:
     clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="oferta_clave")
     cl = [s.strip() for s in clave_input.split(',')]
@@ -127,7 +128,7 @@ with tab2:
     st.plotly_chart(fig_histogram_oferta, key="oferta_histogram_oferta")
     st.plotly_chart(fig_pie_oferta, key="oferta_pie_oferta")
 
-# Pestaña 3: Demanda
+# Pestaña 3: Instituto
 with tab3:
     selected_instituto = st.selectbox("Ingrese el Instituto:", list(instituto_options.keys()), key="demanda_instituto")
     inst = instituto_options[selected_instituto]
