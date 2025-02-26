@@ -5,18 +5,17 @@ import plotly.express as px  # Importar plotly para los gráficos interactivos
 # Leer datos
 oferta = pd.read_csv("dash.csv", encoding='latin-1', index_col='propuesta')
 demanda = pd.read_csv("board.csv", encoding='latin-1', index_col='partida')
-df = pd.read_excel('inst.xlsx', index_col = '#')
+df = pd.read_excel('inst.xlsx', index_col='#')
 
 # Variables
 proveedores_unicos = df['PROVEEDOR'].unique()
 claves_unicas = df['CLAVES'].unique()
 medicamentos = [clave for clave in claves_unicas if int(clave.split('.')[0]) < 60]
 material_curacion = [clave for clave in claves_unicas if int(clave.split('.')[0]) >= 60]
-unico = df[df['ABASTO']==1]
-simultaneo = df[df['ABASTO']<1]
+unico = df[df['ABASTO'] == 1]
+simultaneo = df[df['ABASTO'] < 1]
 ab_u = unico['CLAVES'].unique()
 ab_s = simultaneo['CLAVES'].unique()
-
 
 prop = oferta['clave'].nunique()
 of = len(oferta[oferta['estatus'] != 'no procedente'])
@@ -43,7 +42,6 @@ st.image("header.png", use_container_width=True)
 
 # Opciones
 clave_options = {claves: claves for claves in claves_unicas}
-
 
 instituto_options = {
     "imss": "imss",
@@ -101,7 +99,6 @@ with tab1:
         col6.metric("SIN OFERTA%", f"{so}")
         col7.metric("SIMULTÁNEAS", f"{absim}")
 
-
     # Mostrar gráficos 
     st.plotly_chart(fig_histogram_oferta, key="resumen_histogram_oferta")
     st.plotly_chart(fig_pie_oferta, key="resumen_pie_oferta")
@@ -117,12 +114,6 @@ with tab2:
     selected_proveedor = st.selectbox("Ingrese el proveedor", list(proveedor_options.keys()), key="oferta_proveedor")
     prov = proveedor_options[selected_proveedor]
 
-    selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="resumen_abasto")
-    abastecimiento = abasto_options[selected_abasto]
-
-    selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="resumen_type")
-    ty = type_options[selected_type]
-
     selected_status = st.selectbox("Ingrese el estatus", list(status_options.keys()), key="oferta_status")
     stat = status_options[selected_status]
 
@@ -137,10 +128,6 @@ with tab3:
 
     clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="demanda_clave")
     cl = [s.strip() for s in clave_input.split(',')]
-
-    selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="resumen_abasto")
-    abastecimiento = abasto_options[selected_abasto]
-
 
     selected_status = st.selectbox("Ingrese el estatus", list(status_options.keys()), key="demanda_status")
     stat = status_options[selected_status]
