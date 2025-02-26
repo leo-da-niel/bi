@@ -60,13 +60,6 @@ abasto_options = {
     "Abastecimiento simultáneo": ab_s,
     "Abastecimiento único": ab_u
 }
-status_options = {
-    "General": claves_unicas,
-    "Desiertas": "desierta",
-    "Adjudicación Única": "único",
-    "Abastecimiento Simultáneo": "simultáneo",
-    "Sin Oferta": "sin oferta"
-}
 
 type_options = {
     "General": claves_unicas,
@@ -79,9 +72,6 @@ tab1, tab2, tab3 = st.tabs(["Resumen de licitación", "Oferta", "Demanda"])
 
 # Pestaña 1: Resumen de licitación
 with tab1:
-    selected_status = st.selectbox("Ingrese el estatus", list(status_options.keys()), key="resumen_status")
-    stat = status_options[selected_status]
-
     selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="resumen_abasto")
     abastecimiento = abasto_options[selected_abasto]
 
@@ -92,21 +82,21 @@ with tab1:
     cl = [s.strip() for s in clave_input.split(',')]
 
     # Filtrar datos
-    datos_filtrados_oferta = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento)) & (df['ESTATUS'] == stat)]
-    datos_filtrados_demanda = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento)) & (df['ESTATUS'] == stat)]
+    datos_filtrados_oferta = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento))]
+    datos_filtrados_demanda = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento))]
 
     # Crear un contenedor para el recuadro
     with st.container():
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("TOTAL DE PROPUESTAS", f"{len(datos_filtrados_oferta)}")
-        col2.metric("OFERTAS PARA ANÁLISIS", f"{len(datos_filtrados_oferta[datos_filtrados_oferta['ESTATUS'] != 'no procedente'])}")
-        col3.metric("ADJUDICADAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ESTATUS'].isin(['único', 'simultáneo'])])}")
-        col4.metric("DESIERTAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ESTATUS'] == 'desierta'])}")
+        col2.metric("OFERTAS PARA ANÁLISIS", f"{len(datos_filtrados_oferta)}")
+        col3.metric("ADJUDICADAS", f"{len(datos_filtrados_demanda)}")
+        col4.metric("DESIERTAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] == 0])}")
         
         col5, col6, col7 = st.columns(3)
-        col5.metric("PROPUESTAS EFECTIVAS", f"{len(datos_filtrados_oferta[datos_filtrados_oferta['ESTATUS'] != 'no procedente'])}")
-        col6.metric("SIN OFERTA%", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ESTATUS'] == 'sin oferta'])}")
-        col7.metric("SIMULTÁNEAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ESTATUS'] == 'simultáneo'])}")
+        col5.metric("PROPUESTAS EFECTIVAS", f"{len(datos_filtrados_oferta)}")
+        col6.metric("SIN OFERTA%", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] == 0])}")
+        col7.metric("SIMULTÁNEAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] < 1])}")
 
     # Mostrar gráficos 
     st.plotly_chart(crear_histograma_oferta(datos_filtrados_oferta), key="resumen_histogram_oferta")
@@ -123,9 +113,6 @@ with tab2:
     selected_proveedor = st.selectbox("Ingrese el proveedor", list(proveedor_options.keys()), key="oferta_proveedor")
     prov = proveedor_options[selected_proveedor]
 
-    selected_status = st.selectbox("Ingrese el estatus", list(status_options.keys()), key="oferta_status")
-    stat = status_options[selected_status]
-
     selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="oferta_abasto")
     abastecimiento = abasto_options[selected_abasto]
 
@@ -133,7 +120,7 @@ with tab2:
     ty = type_options[selected_type]
 
     # Filtrar datos
-    datos_filtrados_oferta = df[(df['CLAVES'].isin(cl)) & (df['PROVEEDOR'] == prov) & (df['ABASTO'].isin(abastecimiento)) & (df['ESTATUS'] == stat)]
+    datos_filtrados_oferta = df[(df['CLAVES'].isin(cl)) & (df['PROVEEDOR'] == prov) & (df['ABASTO'].isin(abastecimiento))]
 
     # Mostrar gráficos específicos de la oferta
     st.plotly_chart(crear_histograma_oferta(datos_filtrados_oferta), key="oferta_histogram_oferta")
@@ -147,9 +134,6 @@ with tab3:
     clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="demanda_clave")
     cl = [s.strip() for s in clave_input.split(',')]
 
-    selected_status = st.selectbox("Ingrese el estatus", list(status_options.keys()), key="demanda_status")
-    stat = status_options[selected_status]
-
     selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="demanda_abasto")
     abastecimiento = abasto_options[selected_abasto]
 
@@ -157,17 +141,17 @@ with tab3:
     ty = type_options[selected_type]
 
     # Filtrar datos
-    datos_filtrados_demanda = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO'] == inst) & (df['ABASTO'].isin(abastecimiento)) & (df['ESTATUS'] == stat)]
+    datos_filtrados_demanda = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO'] == inst) & (df['ABASTO'].isin(abastecimiento))]
 
     # Mostrar gráficos específicos de la demanda
     st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="demanda_histogram_demanda")
     st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="demanda_pie_demanda")
 
     col4, col5, col6, col7 = st.columns(4)
-    col4.metric("ADJUDICADAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ESTATUS'].isin(['único', 'simultáneo'])])}")
-    col5.metric("SIN OFERTA%", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ESTATUS'] == 'sin oferta'])}")
-    col6.metric("DESIERTAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ESTATUS'] == 'desierta'])}")
-    col7.metric("SIMULTÁNEAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ESTATUS'] == 'simultáneo'])}")
+    col4.metric("ADJUDICADAS", f"{len(datos_filtrados_demanda)}")
+    col5.metric("SIN OFERTA%", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] == 0])}")
+    col6.metric("DESIERTAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] == 0])}")
+    col7.metric("SIMULTÁNEAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] < 1])}")
     
     # Mostrar gráficos interactivos
     st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="demanda_histogram")
