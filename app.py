@@ -20,14 +20,14 @@ ab_s = simultaneo['CLAVES'].unique()
 # Definir funciones para crear gráficos
 
 
-def crear_pie(data, names, title):
-    return px.pie(data, names, title)
+def crear_pie(data)#, names, title):
+    return px.pie(data)#names, title)
 
-def crear_hist(data, x, title):
-    return px.histogram(data, x, title)
+def crear_hist(data)#, x, title):
+    return px.histogram(data)#, x, title)
 
-def crear_líneas(df, x, y, color):
-    return px.line(df, x, y, color)
+def crear_líneas(data)#, x, y, color):
+    return px.line(data)#, x, y, color)
 
 
 #def crear_pie_demanda(data):
@@ -99,11 +99,11 @@ with tab1:
         col7.metric("SIMULTÁNEAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] < 1])}")
 
     # Mostrar gráficos 
-    #st.plotly_chart(crear_histograma_oferta(datos_filtrados_oferta), key="resumen_histogram_oferta")
-    st.plotly_chart(crear_pie_oferta(datos_filtrados_oferta), key="resumen_pie_oferta")
-    st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="resumen_histogram_demanda")
-    st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="resumen_pie_demanda") 
-    st.plotly_chart(crear_hist_of_ad(datos_filtrados_oferta), key="resumen_hist_of_ad")
+    st.plotly_chart(crear_hist(datos_filtrados_oferta), key="resumen_histogram_oferta")
+    st.plotly_chart(crear_pie(datos_filtrados_oferta), key="resumen_pie_oferta")
+    st.plotly_chart(crear_hist(datos_filtrados_demanda), key="resumen_histogram_demanda")
+    st.plotly_chart(crear_pie(datos_filtrados_demanda), key="resumen_pie_demanda") 
+    st.plotly_chart(crear_hist(datos_filtrados_oferta), key="resumen_hist_of_ad")
 
 # Pestaña 2: Oferta
 with tab2:
@@ -165,8 +165,8 @@ with tab3:
     datos_filtrados_demanda = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO'] == inst) & (df['ABASTO'].isin(abastecimiento))]
 
     # Mostrar gráficos específicos de la demanda
-    st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="demanda_histogram_demanda")
-    st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="demanda_pie_demanda")
+    st.plotly_chart(crear_hist(datos_filtrados_demanda), key="demanda_histogram_demanda")
+    st.plotly_chart(crear_pie(datos_filtrados_demanda), key="demanda_pie_demanda")
 
     col4, col5, col6, col7 = st.columns(4)
     col4.metric("ADJUDICADAS", f"{len(datos_filtrados_demanda)}")
@@ -175,8 +175,8 @@ with tab3:
     col7.metric("SIMULTÁNEAS", f"{len(datos_filtrados_demanda[datos_filtrados_demanda['ABASTO'] < 1])}")
     
     # Mostrar gráficos interactivos
-    st.plotly_chart(crear_histograma_demanda(datos_filtrados_demanda), key="demanda_histogram")
-    st.plotly_chart(crear_pie_demanda(datos_filtrados_demanda), key="demanda_pie")
+    st.plotly_chart(crear_hist(datos_filtrados_demanda), key="demanda_histogram")
+    st.plotly_chart(crear_pie(datos_filtrados_demanda), key="demanda_pie")
 
     st.header("Demanda")
     st.write(demanda.head())
