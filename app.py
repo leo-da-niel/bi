@@ -74,7 +74,7 @@ type_options = {
 }
 
 # Pestañas
-tab1, tab2, tab3 = st.tabs(["Resumen de licitación", "Oferta", "Demanda"])
+tab1, tab2, tab3 = st.tabs(["Claves", "Proveedores", "Institutos"])
 
 # Pestaña 1: Resumen de licitación
 with tab1:
@@ -88,18 +88,13 @@ with tab1:
     cl = [s.strip() for s in clave_input.split(',')]
 
     # Filtrar datos
-    datos_filtrados_demanda = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento))]
+    datos_filtrados = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento)) & (df['CLAVE'].isin(ty))]
 
     # Crear un contenedor para el recuadro
-    with st.container():
-        
 
     # Mostrar gráficos 
-    st.plotly_chart(crear_hist(datos_filtrados_oferta), key="resumen_histogram_oferta")
-    st.plotly_chart(crear_pie(datos_filtrados_oferta), key="resumen_pie_oferta")
-    st.plotly_chart(crear_hist(datos_filtrados_demanda), key="resumen_histogram_demanda")
-    st.plotly_chart(crear_pie(datos_filtrados_demanda), key="resumen_pie_demanda") 
-    st.plotly_chart(crear_hist(datos_filtrados_oferta), key="resumen_hist_of_ad")
+    st.plotly_chart(crear_hist(datos_filtrados), key="resumen_histogram_oferta")
+    st.plotly_chart(crear_pie(datos_filtrados), key="resumen_pie_oferta")
 
 # Pestaña 2: Oferta
 with tab2:
