@@ -84,7 +84,7 @@ with tab1:
     selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="resumen_type")
     ty = type_options[selected_type]
 
-    clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="resumen_clave")
+    clave_input = st.selectbox("Ingrese la clave", list(clave_options.keys()), key="resumen_clave")
     cl = [s.strip() for s in clave_input]
 
     # Filtrar datos
