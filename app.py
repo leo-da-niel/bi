@@ -122,8 +122,8 @@ with tab3:
     inst26 = f"{inst}_26"  # Para 2026
 
     # Filtrar los datos para el año 2025 y 2026
-    datos_filtrados_demanda25 = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO_25'] == inst25)]
-    datos_filtrados_demanda26 = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO_26'] == inst26)]
+    datos_filtrados_demanda25 = df[df['CLAVES'].isin(cl)]
+    datos_filtrados_demanda26 = df[df['CLAVES'].isin(cl)]
 
     # Mostrar gráficos para 2025 y 2026
     if not datos_filtrados_demanda25.empty:
