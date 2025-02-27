@@ -85,7 +85,7 @@ with tab1:
     ty = type_options[selected_type]
 
     clave_input = st.selectbox("Ingrese la clave o claves separadas por coma", list(clave_options.keys()), key="resumen_clave")
-    cl = [s.strip() for s in clave_input.split(',')]
+    cl = [s.strip() for s in clave_input]
 
     # Filtrar datos
     datos_filtrados = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento)) & (df['CLAVES'].isin(ty))]
