@@ -88,7 +88,7 @@ with tab1:
     cl = [s.strip() for s in clave_input.split(',')]
 
     # Filtrar datos
-    datos_filtrados = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento)) & (df['CLAVE'].isin(ty))]
+    datos_filtrados = df[(df['CLAVES'].isin(cl)) & (df['ABASTO'].isin(abastecimiento)) & (df['CLAVES'].isin(ty))]
 
     # Crear un contenedor para el recuadro
 
