@@ -110,25 +110,31 @@ with tab2:
 
 # Pestaña 3: Demanda
 with tab3:
+    # Histograma general de los proveedores
+    px.histogram(df["PROVEEDOR"], title="Distribución de Adjudicación por Proveedor")
+    
+    # Selección de instituto
     selected_instituto = st.selectbox("Ingrese el Instituto:", list(instituto_options.keys()), key="demanda_instituto")
     inst = instituto_options[selected_instituto]
-    inst25 = f"{inst}_25"
-    inst26 = f"{inst}_26"
     
-    # Filtrar datos para las instituciones 25 y 26
-    datos_filtrados_demanda25 = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO'] == inst25)]
-    datos_filtrados_demanda26 = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO'] == inst26)]
+    # Generar los nombres de las columnas de 2025 y 2026
+    inst25 = f"{inst}_25"  # Para 2025
+    inst26 = f"{inst}_26"  # Para 2026
 
-    # Mostrar gráficos específicos de la demanda
-    if datos_filtrados_demanda25.empty:
-        st.warning(f"No hay datos para {inst25} en el gráfico de demanda.")
-    else:
+    # Filtrar los datos para el año 2025 y 2026
+    datos_filtrados_demanda25 = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO_25'] == inst25)]
+    datos_filtrados_demanda26 = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO_26'] == inst26)]
+
+    # Mostrar gráficos para 2025 y 2026
+    if not datos_filtrados_demanda25.empty:
         st.plotly_chart(crear_hist(datos_filtrados_demanda25), key="demanda_histogram25")
-    
-    if datos_filtrados_demanda26.empty:
-        st.warning(f"No hay datos para {inst26} en el gráfico de demanda.")
     else:
-        st.plotly_chart(crear_hist(datos_filtrados_demanda26), key="demanda_histogram26")
+        st.warning(f"No hay datos disponibles para el Instituto {inst25} en 2025.")
 
-# Incluir imagen como pie de página
-st.image("footer.png", use_container_width=True)
+    if not datos_filtrados_demanda26.empty:
+        st.plotly_chart(crear_hist(datos_filtrados_demanda26), key="demanda_histogram26")
+    else:
+        st.warning(f"No hay datos disponibles para el Instituto {inst26} en 2026.")
+
+    # Incluir imagen como pie de página
+    st.image("footer.png", use_container_width=True)
