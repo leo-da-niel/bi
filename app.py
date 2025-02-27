@@ -18,14 +18,26 @@ ab_u = unico['CLAVES'].unique()
 ab_s = simultaneo['CLAVES'].unique()
 
 # Definir funciones para crear gráficos
+
+#, names, title):
+#names, title)
+#, x, title):
+# , x, title)
+#, x, y, color):
+#, x, y, color)
 def crear_pie(data):
     return px.pie(data)
 
-def crear_hist(data, columna='CLAVES'):  # Modificación: especificar la columna para el histograma
-    return px.histogram(data, x=columna)  # Usamos una columna específica para el histograma
+
+def crear_hist(data):
+    return px.histogram(data)
+
 
 def crear_líneas(data):
     return px.line(data)
+
+#def crear_pie_demanda(data):
+ #   return px.pie(data, names='estatus', title='Distribución de Estatus de Demanda')
 
 # Configuración de la página
 st.set_page_config(page_title="Dashboard", layout="wide")
@@ -80,15 +92,19 @@ with tab1:
 
     # Crear un contenedor para el recuadro
     with st.container():
-        # Mostrar gráficos 
-        if datos_filtrados_demanda.empty:
-            st.warning("No hay datos para mostrar en el gráfico de demanda.")
-        else:
-            st.plotly_chart(crear_hist(datos_filtrados_demanda), key="resumen_histogram_demanda")
-            st.plotly_chart(crear_pie(datos_filtrados_demanda), key="resumen_pie_demanda")
+        
+
+    # Mostrar gráficos 
+    st.plotly_chart(crear_hist(datos_filtrados_oferta), key="resumen_histogram_oferta")
+    st.plotly_chart(crear_pie(datos_filtrados_oferta), key="resumen_pie_oferta")
+    st.plotly_chart(crear_hist(datos_filtrados_demanda), key="resumen_histogram_demanda")
+    st.plotly_chart(crear_pie(datos_filtrados_demanda), key="resumen_pie_demanda") 
+    st.plotly_chart(crear_hist(datos_filtrados_oferta), key="resumen_hist_of_ad")
 
 # Pestaña 2: Oferta
 with tab2:
+    px.histogram(df["PROVEEDOR"],  title="Distribución de Adjudicación por Proveedor")
+
     selected_proveedor = st.selectbox("Ingrese el proveedor", list(proveedor_options.keys()), key="oferta_proveedor")
     prov = proveedor_options[selected_proveedor]
 
@@ -101,40 +117,56 @@ with tab2:
     # Filtrar datos
     datos_filtrados_oferta = df[(df['CLAVES'].isin(cl)) & (df['PROVEEDOR'] == prov) & (df['ABASTO'].isin(abastecimiento))]
 
-    # Verificar si los datos filtrados no están vacíos
-    if datos_filtrados_oferta.empty:
-        st.warning("No hay datos para mostrar en el gráfico de oferta.")
-    else:
-        st.plotly_chart(crear_hist(datos_filtrados_oferta), key="oferta_histogram_oferta")
-        st.plotly_chart(crear_pie(datos_filtrados_oferta), key="oferta_pie_oferta")
+    # Mostrar gráficos específicos de la oferta
+    st.plotly_chart(crear_histograma_oferta(datos_filtrados_oferta), key="oferta_histogram_oferta")
+    st.plotly_chart(crear_pie_oferta(datos_filtrados_oferta), key="oferta_pie_oferta")
 
 # Pestaña 3: Demanda
 with tab3:
-    # Histograma general de los proveedores
-    px.histogram(df["PROVEEDOR"], title="Distribución de Adjudicación por Proveedor")
+    px.histogram(df["PROVEEDOR"],  title="Distribución de Adjudicación por Proveedor")
     
-    # Selección de instituto
     selected_instituto = st.selectbox("Ingrese el Instituto:", list(instituto_options.keys()), key="demanda_instituto")
     inst = instituto_options[selected_instituto]
-    
-    # Generar los nombres de las columnas de 2025 y 2026
-    inst25 = f"{inst}_25"  # Para 2025
-    inst26 = f"{inst}_26"  # Para 2026
+    inst25 = int+"_25"
+    inst26 = int+"_26"
+    col1, col2 = st.columns(2)
 
-    # Filtrar los datos para el año 2025 y 2026
-    datos_filtrados_demanda25 = df[df['CLAVES'].isin(cl)]
-    datos_filtrados_demanda26 = df[df['CLAVES'].isin(cl)]
+    with col1:
+        fig1 = px.bar(df_grouped[df_grouped["inst25"] > 1000000], x="CLAVES", y="inst25", title="CANTIDADES DEMANDADAS POR IMSS PARA 2025")
+        fig2 = px.bar(df_grouped[(df_grouped["inst25"] > 50000) & (df_grouped["inst25"] < 1000000)], x="CLAVES", y="inst25")
+        fig3 = px.bar(df_grouped[(df_grouped["inst25"] > 1000) & (df_grouped["inst25"] < 50000)], x="CLAVES", y="inst25")
+        fig4 = px.bar(df_grouped[(df_grouped["inst25"] > 0) & (df_grouped["inst25"] < 1000)], x="CLAVES", y="inst25")
+        st.write(fig1)
+        st.write(fig2)
+        st.write(fig3)
+        st.write(fig4)
 
-    # Mostrar gráficos para 2025 y 2026
-    if not datos_filtrados_demanda25.empty:
-        st.plotly_chart(crear_hist(datos_filtrados_demanda25), key="demanda_histogram25")
-    else:
-        st.warning(f"No hay datos disponibles para el Instituto {inst25} en 2025.")
+    with col2:
+        fig5 = px.bar(df_grouped[df_grouped["inst26"] > 1000000], x="CLAVES", y="inst26", title="CANTIDADES DEMANDADAS POR IMSS PARA 2025")
+        fig6 = px.bar(df_grouped[(df_grouped["inst26"] > 50000) & (df_grouped["inst26"] < 1000000)], x="CLAVES", y="inst26")
+        fig7 = px.bar(df_grouped[(df_grouped["inst26"] > 1000) & (df_grouped["inst26"] < 50000)], x="CLAVES", y="inst26")
+        fig8 = px.bar(df_grouped[(df_grouped["inst26"] > 0) & (df_grouped["inst26"] < 1000)], x="CLAVES", y="inst26")
+        st.write(fig5)
+        st.write(fig6)
+        st.write(fig7)
+        st.write(fig8)
 
-    if not datos_filtrados_demanda26.empty:
-        st.plotly_chart(crear_hist(datos_filtrados_demanda26), key="demanda_histogram26")
-    else:
-        st.warning(f"No hay datos disponibles para el Instituto {inst26} en 2026.")
+    selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="demanda_abasto")
+    abastecimiento = abasto_options[selected_abasto]
 
-    # Incluir imagen como pie de página
-    st.image("footer.png", use_container_width=True)
+    selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="demanda_type")
+    ty = type_options[selected_type]
+
+    # Filtrar datos
+    datos_filtrados_demanda25 = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO'] == inst25) & (df['ABASTO'].isin(abastecimiento))]
+    datos_filtrados_demanda26 = df[(df['CLAVES'].isin(cl)) & (df['INSTITUTO'] == inst26) & (df['ABASTO'].isin(abastecimiento))]
+
+    col25, col26 = st.columns(2)
+    st.plotly_chart(crear_hist(datos_filtrados_demanda25), key="demanda_histogram")
+    st.plotly_chart(crear_pie(datos_filtrados_demanda26), key="demanda_pie")
+
+    st.header("Demanda")
+    st.write(demanda.head())
+
+# Incluir imagen como pie de página
+st.image("footer.png", use_container_width=True)
