@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
 # Leer datos
-df = pd.read_excel('inst.xlsx', index_col='#')
+df = pd.read_excel('institutes.xlsx', index_col='#')
 
 # Tratamiento de datos
-dfroot = df[["CLAVES", "DESCRIPCIÓN", "PROVEEDOR", "PRECIO UNITARIO", "ABASTO", "MARCA"]]
+dfroot = df[["CLAVES", "TIPO", "DESCRIPCIÓN", "PROVEEDOR", "PRECIO UNITARIO", "ABASTO", "ABASTECMIENTO", "MARCA"]]
 df5 = df[["IMSS_25", "IMSS BIENESTAR_25", "ISSSTE_25", "SEMAR_25", "CENAPRECE_25", "CENSIDA_25", "CNEGSR_25", "CONASAMA_25", "PEMEX_25"]]
 df6 = df[["IMSS_26", "IMSS BIENESTAR_26", "ISSSTE_26", "SEMAR_26", "CENAPRECE_26", "CENSIDA_26", "CNEGSR_26", "CONASAMA_26", "PEMEX_26"]]
 bi = df5.add(df6.values, fill_value=0)
@@ -385,7 +385,10 @@ with tab1:
         st.header("Tipo de Clave")
         st.plotly_chart(crear_pie(df1), key="resumenbi_pie_oferta")
         st.header("Tipo de Abastecimiento")
-        st.plotly_chart(crear_hist(df2), key="resumenbi_hist_oferta")
+        fig2 = px.line(df, x="ABASTECIMIENTO", y="CLAVES", color="sex")
+        st.plotly_chart(fig2)
+
+        #st.plotly_chart(crear_hist(df2), key="resumenbi_hist_oferta")
         
    #     st.dataframe(claves_fil)
 
