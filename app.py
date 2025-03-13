@@ -347,7 +347,7 @@ with tab1:
         qprov_fil = datos_fil25['PROVEEDOR'].nunique()
         prov_fil = datos_fil25['PROVEEDOR'].unique() # Filtrar filtros 
         abasto_options = datos_fil25
-        clave_options = datos_fil25.unique()
+        clave_options = datos_fil25['CLAVES'].unique()
         type_options = datos_filtrados25
 
     else:
@@ -361,7 +361,7 @@ with tab1:
         qprov_fil = datos_fil26['PROVEEDOR'].nunique()
         prov_fil = datos_fil26['PROVEEDOR'].unique() # Filtrar filtros 
         abasto_options = datos_fil26
-        clave_options = datos_fil26.unique()
+        clave_options = datos_fil26['CLAVES'].unique()
         type_options = datos_filtrados26
         
     # Crear columnas
