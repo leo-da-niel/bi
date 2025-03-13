@@ -12,7 +12,7 @@ import matplotlib.ticker as ticker
 df = pd.read_excel('institutes.xlsx', index_col='#')
 
 # Tratamiento de datos
-dfroot = df[["CLAVES", "TIPO", "DESCRIPCIÓN", "PROVEEDOR", "PRECIO UNITARIO", "ABASTO", "ABASTECMIENTO", "MARCA"]]
+dfroot = df[["CLAVES", "TIPO", "DESCRIPCIÓN", "PROVEEDOR", "PRECIO UNITARIO", "ABASTO", "ABASTECIMIENTO", "MARCA"]]
 df5 = df[["IMSS_25", "IMSS BIENESTAR_25", "ISSSTE_25", "SEMAR_25", "CENAPRECE_25", "CENSIDA_25", "CNEGSR_25", "CONASAMA_25", "PEMEX_25"]]
 df6 = df[["IMSS_26", "IMSS BIENESTAR_26", "ISSSTE_26", "SEMAR_26", "CENAPRECE_26", "CENSIDA_26", "CNEGSR_26", "CONASAMA_26", "PEMEX_26"]]
 bi = df5.add(df6.values, fill_value=0)
