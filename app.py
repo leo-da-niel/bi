@@ -385,8 +385,9 @@ with tab1:
         st.header("Tipo de Clave")
         st.plotly_chart(crear_pie(df1), key="resumenbi_pie_oferta")
         st.header("Tipo de Abastecimiento")
-        fig2 = px.line(df, x="ABASTECIMIENTO", y="CLAVES", color="sex")
-        st.plotly_chart(fig2)
+        clave_counts = df.groupby('ABASTECIMIENTO').size().reset_index(name='count')
+        fig = px.bar(clave_counts, x='ABASTECIMIENTO', y='count', title='Cantidad de Claves por Atributo en Abastecimiento')
+        st.plotly_chart(fig)
 
         #st.plotly_chart(crear_hist(df2), key="resumenbi_hist_oferta")
         
