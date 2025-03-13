@@ -7,7 +7,7 @@ if 'filters' not in st.session_state:
 # Función para agregar un nuevo filtro
 def add_filter():
     st.session_state.filters.append({
-        'field': st.selectbox('Campo', ['Campo1', 'Campo2', 'Campo3'], key=f'field_{len(st.session_state.filters)}'),
+        'field': st.selectbox('Campo', ['Abasto', 'Tipo', 'Clave', 'Periodo'], key=f'field_{len(st.session_state.filters)}'),
         'value': st.text_input('Valor', key=f'value_{len(st.session_state.filters)}')
     })
 
@@ -19,20 +19,31 @@ for i, filter in enumerate(st.session_state.filters):
     st.write(f"Filtro {i+1}: {filter['field']} = {filter['value']}")
 
 # Función para filtrar los catálogos
-def filter_catalogs(catalogs, filters):
+def filter_catalogs(data, filters):
     for filter in filters:
-        catalogs = [item for item in catalogs if filter['value'] in item[filter['field']]]
-    return catalogs
+        if filter['field'] == 'Abasto':
+            data = data[data['CLAVES'].isin(abasto_options[filter['value']])]
+        elif filter['field'] == 'Tipo':
+            data = data[data['CLAVES'].isin(type_options[filter['value']])]
+        elif filter['field'] == 'Clave':
+            data = data[data['CLAVES'].isin([filter['value']])]
+        elif filter['field'] == 'Periodo':
+            data = data[data['PERIODO'] == filter['value']]
+    return data
 
-# Ejemplo de catálogos
-catalogs = [
-    {'Campo1': 'A', 'Campo2': 'B', 'Campo3': 'C'},
-    {'Campo1': 'D', 'Campo2': 'E', 'Campo3': 'F'},
-    {'Campo1': 'G', 'Campo2': 'H', 'Campo3': 'I'}
-]
+# Ejemplo de datos
+import pandas as pd
 
-# Filtrar los catálogos según los filtros aplicados
-filtered_catalogs = filter_catalogs(catalogs, st.session_state.filters)
+# Crear un DataFrame de ejemplo
+data = pd.DataFrame({
+    'CLAVES': ['A', 'B', 'C', 'D', 'E'],
+    'PERIODO': ['2025', '2025', '2026', '2026', 'BIANUAL']
+})
 
-# Mostrar los catálogos filtrados
-st.write('Catálogos Filtrados:', filtered_catalogs)
+# Filtrar los datos según los filtros aplicados
+filtered_data = filter_catalogs(data, st.session_state.filters)
+
+# Mostrar los datos filtrados
+st.write('Datos Filtrados:', filtered_data)
+
+
