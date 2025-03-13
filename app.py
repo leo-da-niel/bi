@@ -302,13 +302,13 @@ with tab1:
     with col2:
         c_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="resumen_type")
         c_ty = type_options[c_selected_type]
-
-    #col3, col4 = st.columns(2)
     with col3:
         c_clave_input = st.selectbox("Ingrese la clave", list(clave_options.keys()), key="resumen_clave")
         c_cl = [c_clave_input] if c_clave_input != "TODAS LAS CLAVES" else claves_unicas
     with col4:
         cl_periodo_input = st.selectbox("Ingrese el periodo de adjudicación", list(periodo_options.keys()), key="resumen_periodo")
+
+    
     # Filtrar datos
     datos_filtradosbi = grnzbitrooted[(grnzbitrooted['CLAVES'].isin(c_cl)) & (grnzbitrooted['CLAVES'].isin(c_abastecimiento)) & (grnzbitrooted['CLAVES'].isin(c_ty))]
     datos_filtrados25 = grnzrooted25[(grnzrooted25['CLAVES'].isin(c_cl)) & (grnzrooted25['CLAVES'].isin(c_abastecimiento)) & (grnzrooted25['CLAVES'].isin(c_ty))]
@@ -331,8 +331,10 @@ with tab1:
         qclaves_fil = datos_filbi['CLAVES'].nunique()
         claves_fil = datos_filbi['CLAVES'].unique()
         qprov_fil = datos_filbi['PROVEEDOR'].nunique()
-        prov_fil = datos_filbi['PROVEEDOR'].unique()
-        
+        prov_fil = datos_filbi['PROVEEDOR'].unique() # Filtrar filtros 
+        abasto_options = datos_filbi
+        clave_options = datos_filbi['CLAVES'].unique()
+        type_options = datos_filtradosbi
         
     elif cl_periodo_input == "2025":
         df1 = datos_filtrados25
@@ -343,7 +345,10 @@ with tab1:
         qclaves_fil = datos_fil25['CLAVES'].nunique()
         claves_fil = datos_fil25['CLAVES'].unique()
         qprov_fil = datos_fil25['PROVEEDOR'].nunique()
-        prov_fil = datos_fil25['PROVEEDOR'].unique()
+        prov_fil = datos_fil25['PROVEEDOR'].unique() # Filtrar filtros 
+        abasto_options = datos_fil25
+        clave_options = datos_fil25.unique()
+        type_options = datos_filtrados25
 
     else:
         df1 = datos_filtrados26
@@ -354,7 +359,10 @@ with tab1:
         qclaves_fil = datos_fil26['CLAVES'].nunique()
         claves_fil = datos_fil26['CLAVES'].unique()
         qprov_fil = datos_fil26['PROVEEDOR'].nunique()
-        prov_fil = datos_fil26['PROVEEDOR'].unique()
+        prov_fil = datos_fil26['PROVEEDOR'].unique() # Filtrar filtros 
+        abasto_options = datos_fil26
+        clave_options = datos_fil26.unique()
+        type_options = datos_filtrados26
         
     # Crear columnas
     col1, col2, col3 = st.columns(3)
