@@ -332,8 +332,9 @@ with tab1:
         if c_selected_abasto == "Abastecimiento único":
             t = df[df['ABASTO'] == 1].index
             # x = df.loc[u]['CLAVES'].unique()
-        elif c_selected_abasto == "Abastecimiento simultáneo":
-            t = df[df['ABASTO'] == 1].index
+        #elif c_selected_abasto == "Abastecimiento simultáneo":
+        else:
+            t = df[df['ABASTO'] < 1].index
             # x = df.loc[s]['CLAVES'].unique()
         df = bd.loc[t]
     
@@ -341,7 +342,7 @@ with tab1:
         if c_selected_ty == "Medicamento":
             n = df[df['TIPO'] == 'MEDICAMENTO'].index
             # y = df.loc[m]['CLAVES'].unique()
-        else c_selected_ty == "Material de Curación":
+        else :# c_selected_ty == "Material de Curación"
             n = df[df['TIPO'] == 'MATERIAL DE CURACIÓN'].index
             # y = df.loc[mc]['CLAVES'].unique()
         df = bd.loc[n]
