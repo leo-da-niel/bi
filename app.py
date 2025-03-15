@@ -329,7 +329,7 @@ with tab1:
     datos_moon_26 = nzrooted2026[(nzrooted2026['CLAVES'].isin(c_cl)) & (nzrooted2026['CLAVES'].isin(c_abastecimiento)) & (nzrooted2026['CLAVES'].isin(c_ty))]
 
     if c_selected_abasto == "Abastecimiento único":
-        t = bd[bd['ABASTO'] = 1].index
+        t = bd[bd['ABASTO'] == 1].index
         # x = df.loc[u]['CLAVES'].unique()
     elif c_selected_abasto == "Abastecimiento simultáneo":
         t = bd[bd['ABASTO'] < 1].index
