@@ -331,19 +331,23 @@ with tab1:
     while c_selected_abasto != "General":
         if c_selected_abasto == "Abastecimiento único":
             t = df[df['ABASTO'] == 1].index
-         #   x = df.loc[u]['CLAVES'].unique()
-        else :
+            # x = df.loc[u]['CLAVES'].unique()
+        else:
             t = df[df['ABASTO'] == 1].index
-          #  x = df.loc[s]['CLAVES'].unique()
-    df = df.loc[t]
+            # x = df.loc[s]['CLAVES'].unique()
+        df = df.loc[t]
+    
     while c_selected_ty != "General":
         if c_selected_ty == "Medicamento":
-            n = df[df['TIPO']=='MEDICAMENTO'].index
-           # y = df.loc[m]['CLAVES'].unique()
-        else :
-            n = df[df['TIPO']=='MATERIAL DE CURACIÓN'].index
-            #y = df.loc[mc]['CLAVES'].unique()
-    df = df.loc[n]
+            n = df[df['TIPO'] == 'MEDICAMENTO'].index
+            # y = df.loc[m]['CLAVES'].unique()
+        else:
+            n = df[df['TIPO'] == 'MATERIAL DE CURACIÓN'].index
+            # y = df.loc[mc]['CLAVES'].unique()
+        df = df.loc[n]
+    
+    
+  
       #  r = t.intersect(n)
        # df = bd.loc[r]
     if cl_periodo_input == "BIANUAL":
@@ -631,3 +635,4 @@ with tab3:
     
 # Incluir imagen como pie de página
 st.image("footer.png", use_container_width=True)
+
