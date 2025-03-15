@@ -296,18 +296,18 @@ tab1, tab2, tab3 = st.tabs(["Adjudicación Directa", "Institutos", "Proveedores"
 with tab1:
     st.header("Resumen de Adjudicación Directa")
 
-    x = abasto_options
-    y = type_options
+#    x = abasto_options
+ #   y = type_options
     z = clave_options
     p = periodo_options
 
     
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        c_selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(x.keys()), key="resumen_abasto")
+        c_selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="resumen_abasto")
         c_abastecimiento = abasto_options[c_selected_abasto]
     with col2:
-        c_selected_type = st.selectbox("Ingrese el tipo de clave", list(y.keys()), key="resumen_type")
+        c_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="resumen_type")
         c_ty = type_options[c_selected_type]
     with col3:
         c_clave_input = st.selectbox("Ingrese la clave", list(z.keys()), key="resumen_clave")
@@ -330,18 +330,19 @@ with tab1:
 
     while (c_selected_abasto != "General") or (c_selected_ty != "General"):# and (c_clave_input != "General"):
         if c_selected_abasto == "Abastecimiento único":
-            u = df[df['ABASTO'] == 1].index
-            x = df.loc[u]['CLAVES'].unique()
+            t = df[df['ABASTO'] == 1].index
+         #   x = df.loc[u]['CLAVES'].unique()
         else :
-            s = df[df['ABASTO'] == 1].index
-            x = df.loc[s]['CLAVES'].unique()
+            t = df[df['ABASTO'] == 1].index
+          #  x = df.loc[s]['CLAVES'].unique()
         if c_selected_ty == "Medicamento":
-            m = df[df['TIPO']=='MEDICAMENTO'].index
-            y = df.loc[m]['CLAVES'].unique()
+            n = df[df['TIPO']=='MEDICAMENTO'].index
+           # y = df.loc[m]['CLAVES'].unique()
         else :
-            mc = df[df['TIPO']=='MATERIAL DE CURACIÓN'].index
-            y = df.loc[mc]['CLAVES'].unique()
-
+            n = df[df['TIPO']=='MATERIAL DE CURACIÓN'].index
+            #y = df.loc[mc]['CLAVES'].unique()
+        r = t.intersect(n)
+        df = bd.loc[r]
     if cl_periodo_input == "BIANUAL":
         df1 = datos_filtradosbi
         df2 = datos_filbi
