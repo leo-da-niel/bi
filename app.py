@@ -8,27 +8,6 @@ import altair as alt
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
-# Leer datos
-df = pd.read_excel('institutes.xlsx', index_col='#')
-
-# Tratamiento de datos
-dfroot = df[["CLAVES", "TIPO", "DESCRIPCIÓN", "PROVEEDOR", "PRECIO UNITARIO", "ABASTO", "ABASTECIMIENTO", "MARCA"]]
-df5 = df[["IMSS_25", "IMSS BIENESTAR_25", "ISSSTE_25", "SEMAR_25", "CENAPRECE_25", "CENSIDA_25", "CNEGSR_25", "CONASAMA_25", "PEMEX_25"]]
-df6 = df[["IMSS_26", "IMSS BIENESTAR_26", "ISSSTE_26", "SEMAR_26", "CENAPRECE_26", "CENSIDA_26", "CNEGSR_26", "CONASAMA_26", "PEMEX_26"]]
-bi = df5.add(df6.values, fill_value=0)
-bi.columns = [col[:-1] + '5-26' for col in bi.columns]
-
-# Variables
-proveedores_unicos = df['PROVEEDOR'].unique()
-claves_unicas = df['CLAVES'].unique()
-nproveedores_unicos = df['PROVEEDOR'].nunique()
-nclaves_unicas = df['CLAVES'].nunique()
-medicamentos = [clave for clave in claves_unicas if int(clave.split('.')[0]) < 60]
-material_curacion = [clave for clave in claves_unicas if int(clave.split('.')[0]) >= 60]
-unico = df[df['ABASTO'] == 1]
-simultaneo = df[df['ABASTO'] < 1]
-ab_u = unico['CLAVES'].unique()
-ab_s = simultaneo['CLAVES'].unique()
 
 # Definimos funciones de Cálculo
 def calcular_monto(data):
@@ -188,7 +167,6 @@ def make_donut(input_response, input_text, input_color):
     ).properties(width=130, height=130)
     return plot_bg + plot + text
 
-import plotly.express as px
 
 def cloud_bubbles_prov(data):
     tentop = tentop_prov(data)
@@ -225,6 +203,29 @@ st.set_page_config(page_title="Dashboard", layout="wide")
 
 # Incluir imagen como encabezado
 st.image("header.png", use_container_width=True)
+
+# Leer datos
+bd = pd.read_excel('institutes.xlsx', index_col='#')
+df = bd
+
+# Tratamiento de datos
+dfroot = df[["CLAVES", "TIPO", "DESCRIPCIÓN", "PROVEEDOR", "PRECIO UNITARIO", "ABASTO", "ABASTECIMIENTO", "MARCA"]]
+df5 = df[["IMSS_25", "IMSS BIENESTAR_25", "ISSSTE_25", "SEMAR_25", "CENAPRECE_25", "CENSIDA_25", "CNEGSR_25", "CONASAMA_25", "PEMEX_25"]]
+df6 = df[["IMSS_26", "IMSS BIENESTAR_26", "ISSSTE_26", "SEMAR_26", "CENAPRECE_26", "CENSIDA_26", "CNEGSR_26", "CONASAMA_26", "PEMEX_26"]]
+bi = df5.add(df6.values, fill_value=0)
+bi.columns = [col[:-1] + '5-26' for col in bi.columns]
+
+# Variables
+proveedores_unicos = df['PROVEEDOR'].unique()
+claves_unicas = df['CLAVES'].unique()
+nproveedores_unicos = df['PROVEEDOR'].nunique()
+nclaves_unicas = df['CLAVES'].nunique()
+medicamentos = [clave for clave in claves_unicas if int(clave.split('.')[0]) < 60]
+material_curacion = [clave for clave in claves_unicas if int(clave.split('.')[0]) >= 60]
+unico = df[df['ABASTO'] == 1]
+simultaneo = df[df['ABASTO'] < 1]
+ab_u = unico['CLAVES'].unique()
+ab_s = simultaneo['CLAVES'].unique()
 
 # Opciones
 clave_options = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in claves_unicas}}
@@ -295,7 +296,6 @@ tab1, tab2, tab3 = st.tabs(["Adjudicación Directa", "Institutos", "Proveedores"
 with tab1:
     st.header("Resumen de Adjudicación Directa")
 
-
     x = abasto_options
     y = type_options
     z = clave_options
@@ -328,19 +328,20 @@ with tab1:
     datos_moon_25 = nzrooted2025[(nzrooted2025['CLAVES'].isin(c_cl)) & (nzrooted2025['CLAVES'].isin(c_abastecimiento)) & (nzrooted2025['CLAVES'].isin(c_ty))]
     datos_moon_26 = nzrooted2026[(nzrooted2026['CLAVES'].isin(c_cl)) & (nzrooted2026['CLAVES'].isin(c_abastecimiento)) & (nzrooted2026['CLAVES'].isin(c_ty))]
 
-    while (c_selected_abasto != "General") and (c_selected_ty != "General") and (c_clave_input != "General"):
-        if cl_periodo_input == "BIANUAL":
-            x = 
-            y = 
-            z = 
-        elif cl_periodo_input == "2025":
-            x = 
-            y = 
-            z = 
-        else cl_periodo_input == "2026":
-            x = 
-            y = 
-            z = 
+    while (c_selected_abasto != "General") and (c_selected_ty != "General"):# and (c_clave_input != "General"):
+        if c_selected_abasto == "Abastecimiento único":
+            u = df[df['ABASTO'] == 1].index
+            x = df.loc[u]['CLAVES'].unique()
+        else c_selected_abasto == "Abastecimiento simultáneo":
+            s = df[df['ABASTO'] == 1].index
+            x = df.loc[s]['CLAVES'].unique()
+        if c_selected_ty == "Medicamento":
+            m = df[df['TIPO']=='MEDICAMENTO'].index
+            y = df.loc[m]['CLAVES'].unique()
+        else c_selected_ty == "Material de Curación":
+            mc = df[df['TIPO']=='MATERIAL DE CURACIÓN'].index
+            y = df.loc[mc]['CLAVES'].unique()
+
     if cl_periodo_input == "BIANUAL":
         df1 = datos_filtradosbi
         df2 = datos_filbi
@@ -351,9 +352,9 @@ with tab1:
         claves_fil = datos_filbi['CLAVES'].unique()
         qprov_fil = datos_filbi['PROVEEDOR'].nunique()
         prov_fil = datos_filbi['PROVEEDOR'].unique() # Filtrar filtros 
-        abasto_options = datos_filbi
-        clave_options = datos_filbi['CLAVES'].unique()
-        type_options = datos_filtradosbi
+  #      abasto_options = datos_filbi
+   #     clave_options = datos_filbi['CLAVES'].unique()
+    #    type_options = datos_filtradosbi
         
     elif cl_periodo_input == "2025":
         df1 = datos_filtrados25
@@ -365,9 +366,9 @@ with tab1:
         claves_fil = datos_fil25['CLAVES'].unique()
         qprov_fil = datos_fil25['PROVEEDOR'].nunique()
         prov_fil = datos_fil25['PROVEEDOR'].unique() # Filtrar filtros 
-        abasto_options = datos_fil25
-        clave_options = datos_fil25['CLAVES'].unique()
-        type_options = datos_filtrados25
+#        abasto_options = datos_fil25
+ #       clave_options = datos_fil25['CLAVES'].unique()
+  #      type_options = datos_filtrados25
 
     else:
         df1 = datos_filtrados26
@@ -379,9 +380,9 @@ with tab1:
         claves_fil = datos_fil26['CLAVES'].unique()
         qprov_fil = datos_fil26['PROVEEDOR'].nunique()
         prov_fil = datos_fil26['PROVEEDOR'].unique() # Filtrar filtros 
-        abasto_options = datos_fil26
-        clave_options = datos_fil26['CLAVES'].unique()
-        type_options = datos_filtrados26
+ #       abasto_options = datos_fil26
+  #      clave_options = datos_fil26['CLAVES'].unique()
+   #     type_options = datos_filtrados26
         
     # Crear columnas
     col1, col2, col3 = st.columns(3)
