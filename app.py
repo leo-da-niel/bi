@@ -335,7 +335,7 @@ with tab1:
         else :
             t = df[df['ABASTO'] == 1].index
           #  x = df.loc[s]['CLAVES'].unique()
-        df = df.loc[t]
+    df = df.loc[t]
     while c_selected_ty != "General":
         if c_selected_ty == "Medicamento":
             n = df[df['TIPO']=='MEDICAMENTO'].index
