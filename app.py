@@ -328,13 +328,14 @@ with tab1:
     datos_moon_25 = nzrooted2025[(nzrooted2025['CLAVES'].isin(c_cl)) & (nzrooted2025['CLAVES'].isin(c_abastecimiento)) & (nzrooted2025['CLAVES'].isin(c_ty))]
     datos_moon_26 = nzrooted2026[(nzrooted2026['CLAVES'].isin(c_cl)) & (nzrooted2026['CLAVES'].isin(c_abastecimiento)) & (nzrooted2026['CLAVES'].isin(c_ty))]
 
-    while (c_selected_abasto != "General") or (c_selected_ty != "General"):# and (c_clave_input != "General"):
+    while c_selected_abasto != "General":
         if c_selected_abasto == "Abastecimiento único":
             t = df[df['ABASTO'] == 1].index
          #   x = df.loc[u]['CLAVES'].unique()
         else :
             t = df[df['ABASTO'] == 1].index
           #  x = df.loc[s]['CLAVES'].unique()
+    while c_selected_ty != "General":
         if c_selected_ty == "Medicamento":
             n = df[df['TIPO']=='MEDICAMENTO'].index
            # y = df.loc[m]['CLAVES'].unique()
