@@ -335,6 +335,7 @@ with tab1:
         else :
             t = df[df['ABASTO'] == 1].index
           #  x = df.loc[s]['CLAVES'].unique()
+        df = df.loc[t]
     while c_selected_ty != "General":
         if c_selected_ty == "Medicamento":
             n = df[df['TIPO']=='MEDICAMENTO'].index
@@ -342,8 +343,9 @@ with tab1:
         else :
             n = df[df['TIPO']=='MATERIAL DE CURACIÓN'].index
             #y = df.loc[mc]['CLAVES'].unique()
-        r = t.intersect(n)
-        df = bd.loc[r]
+    df = df.loc[n]
+      #  r = t.intersect(n)
+       # df = bd.loc[r]
     if cl_periodo_input == "BIANUAL":
         df1 = datos_filtradosbi
         df2 = datos_filbi
