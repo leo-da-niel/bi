@@ -332,10 +332,11 @@ with tab1:
         if c_selected_abasto == "Abastecimiento único":
             t = df[df['ABASTO'] == 1].index
             # x = df.loc[u]['CLAVES'].unique()
-        #elif c_selected_abasto == "Abastecimiento simultáneo":
-        else:
+        elif c_selected_abasto == "Abastecimiento simultáneo":
             t = df[df['ABASTO'] < 1].index
             # x = df.loc[s]['CLAVES'].unique()
+        else: 
+            t = df.index
         df = bd.loc[t]
     
     while c_selected_ty != "General":
