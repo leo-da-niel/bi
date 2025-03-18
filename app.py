@@ -296,7 +296,7 @@ with tab1:
     grnzbitrooted = grouping(nzbitrooted)
     grnzrooted25 = grouping(nzrooted25)
     grnzrooted26 = grouping(nzrooted26)
-        st.header("Resumen de Adjudicación Directa")
+    st.header("Resumen de Adjudicación Directa")
     
     #    x = abasto_options
      #   y = type_options
