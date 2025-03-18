@@ -300,8 +300,8 @@ with tab1:
     
     #    x = abasto_options
      #   y = type_options
-        z = clave_options
-        p = periodo_options
+    z = clave_options
+    p = periodo_options
 
     
     col1, col2, col3, col4 = st.columns(4)
