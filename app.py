@@ -260,6 +260,34 @@ with tab1:
         "Medicamento": medicamentos,
         "Material de Curación": material_curacion
     }
+
+    df25 = pd.concat([df5, totales(df5)], axis=1)
+    df26 = pd.concat([df6, totales(df6)], axis=1)
+    bit  = pd.concat([bi, totales(bi)], axis=1)
+    #monto
+    df2025 = pd.concat([df5, totales(calcular_monto(df5))], axis=1)
+    df2026 = pd.concat([df6, totales(calcular_monto(df6))], axis=1)
+    bitmoon  = pd.concat([bi, totales(calcular_monto(bi))], axis=1)
+    
+    bitrooted = rooted(bit)
+    rooted25 = rooted(df25)
+    rooted26 = rooted(df26)
+    #monto
+    bitmoonrooted = rooted(bitmoon)
+    rooted2025 = rooted(df2025)
+    rooted2026 = rooted(df2026)
+    
+    nzbitrooted = bitrooted[bitrooted["TOTAL"] !=0]
+    nzrooted25 = rooted25[rooted25["TOTAL"] !=0]
+    nzrooted26 = rooted26[rooted26["TOTAL"] !=0]
+    #monto
+    nzbitmoonrooted = bitmoonrooted[bitmoonrooted["TOTAL"] !=0]
+    nzrooted2025 = rooted2025[rooted25["TOTAL"] !=0]
+    nzrooted2026 = rooted2026[rooted26["TOTAL"] !=0]
+    
+    grnzbitrooted = grouping(nzbitrooted)
+    grnzrooted25 = grouping(nzrooted25)
+    grnzrooted26 = grouping(nzrooted26)
     
     # Incluir imagen como encabezado
     st.image("header.png", use_container_width=True)
