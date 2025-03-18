@@ -204,13 +204,6 @@ tab1, tab2, tab3 = st.tabs(["Adjudicación Directa", "Institutos", "Proveedores"
 
 # Pestaña 1
 with tab1:
-
-
-    # Configuración de la página
-    st.set_page_config(page_title="Dashboard", layout="wide")
-    
-    # Incluir imagen como encabezado
-    st.image("header.png", use_container_width=True)
     
     # Leer datos
     bd = pd.read_excel('institutes.xlsx', index_col='#')
@@ -302,7 +295,11 @@ with tab1:
      #   y = type_options
     z = clave_options
     p = periodo_options
-
+    # Configuración de la página
+    st.set_page_config(page_title="Dashboard", layout="wide")
+    
+    # Incluir imagen como encabezado
+    st.image("header.png", use_container_width=True)
     
     col1, col2, col3, col4 = st.columns(4)
     with col1:
