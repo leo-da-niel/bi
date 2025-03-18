@@ -431,11 +431,6 @@ with tab1:
     st.dataframe(df2)
 # Pestaña 2
 with tab2:
-    # Configuración de la página
-    st.set_page_config(page_title="Dashboard", layout="wide")
-    
-    # Incluir imagen como encabezado
-    st.image("header.png", use_container_width=True)
     
     # Leer datos
     bd = pd.read_excel('institutes.xlsx', index_col='#')
@@ -595,11 +590,7 @@ with tab2:
     
 # Pestaña 3
 with tab3:
-    # Configuración de la página
-    st.set_page_config(page_title="Dashboard", layout="wide")
-    
-    # Incluir imagen como encabezado
-    st.image("header.png", use_container_width=True)
+
     
     # Leer datos
     bd = pd.read_excel('institutes.xlsx', index_col='#')
