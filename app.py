@@ -229,13 +229,11 @@ with tab1:
     ab_u = unico['CLAVES'].unique()
     ab_s = simultaneo['CLAVES'].unique()
     
-    # Opciones
-    clave_options = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in claves_unicas}}
-    
+    # Opciones iniciales
     periodo_options = {
-    "BIANUAL": "BIANUAL",
-    "2025": "2025",
-    "2026": "2026"
+        "BIANUAL": "BIANUAL",
+        "2025": "2025",
+        "2026": "2026"
     }
         
     instituto_options = {
@@ -263,41 +261,6 @@ with tab1:
         "Material de Curación": material_curacion
     }
     
-    df25 = pd.concat([df5, totales(df5)], axis=1)
-    df26 = pd.concat([df6, totales(df6)], axis=1)
-    bit  = pd.concat([bi, totales(bi)], axis=1)
-    #monto
-    df2025 = pd.concat([df5, totales(calcular_monto(df5))], axis=1)
-    df2026 = pd.concat([df6, totales(calcular_monto(df6))], axis=1)
-    bitmoon  = pd.concat([bi, totales(calcular_monto(bi))], axis=1)
-    
-    bitrooted = rooted(bit)
-    rooted25 = rooted(df25)
-    rooted26 = rooted(df26)
-    #monto
-    bitmoonrooted = rooted(bitmoon)
-    rooted2025 = rooted(df2025)
-    rooted2026 = rooted(df2026)
-    
-    nzbitrooted = bitrooted[bitrooted["TOTAL"] !=0]
-    nzrooted25 = rooted25[rooted25["TOTAL"] !=0]
-    nzrooted26 = rooted26[rooted26["TOTAL"] !=0]
-    #monto
-    nzbitmoonrooted = bitmoonrooted[bitmoonrooted["TOTAL"] !=0]
-    nzrooted2025 = rooted2025[rooted25["TOTAL"] !=0]
-    nzrooted2026 = rooted2026[rooted26["TOTAL"] !=0]
-    
-    grnzbitrooted = grouping(nzbitrooted)
-    grnzrooted25 = grouping(nzrooted25)
-    grnzrooted26 = grouping(nzrooted26)
-    st.header("Resumen de Adjudicación Directa")
-    
-    #    x = abasto_options
-     #   y = type_options
-    z = clave_options
-    p = periodo_options
-
-    
     # Incluir imagen como encabezado
     st.image("header.png", use_container_width=True)
     
@@ -309,13 +272,13 @@ with tab1:
         c_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="resumen_type")
         c_ty = type_options[c_selected_type]
     with col3:
-        # Filtrar las claves basadas en la selección de tipo de clave
+        # Filtrar las claves basadas en la selección de tipo de clave y abastecimiento
         if c_selected_type == "Medicamento":
-            filtered_claves = medicamentos
+            filtered_claves = [clave for clave in c_abastecimiento if clave in medicamentos]
         elif c_selected_type == "Material de Curación":
-            filtered_claves = material_curacion
+            filtered_claves = [clave for clave in c_abastecimiento if clave in material_curacion]
         else:
-            filtered_claves = claves_unicas
+            filtered_claves = c_abastecimiento
         
         clave_options_filtered = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in filtered_claves}}
         c_clave_input = st.selectbox("Ingrese la clave", list(clave_options_filtered.keys()), key="resumen_clave")
@@ -336,30 +299,6 @@ with tab1:
     datos_moon_25 = nzrooted2025[(nzrooted2025['CLAVES'].isin(c_cl)) & (nzrooted2025['CLAVES'].isin(c_abastecimiento)) & (nzrooted2025['CLAVES'].isin(c_ty))]
     datos_moon_26 = nzrooted2026[(nzrooted2026['CLAVES'].isin(c_cl)) & (nzrooted2026['CLAVES'].isin(c_abastecimiento)) & (nzrooted2026['CLAVES'].isin(c_ty))]
 
-    if c_selected_abasto == "Abastecimiento único":
-        t = bd[bd['ABASTO'] == 1].index
-        # x = df.loc[u]['CLAVES'].unique()
-    elif c_selected_abasto == "Abastecimiento simultáneo":
-        t = bd[bd['ABASTO'] < 1].index
-        # x = df.loc[s]['CLAVES'].unique()
-    else: 
-        t = bd.index
-    df = bd.loc[t]
-    
-    if c_selected_type != "General":
-        n = df.index
-    elif c_selected_type == "Medicamento":
-        n = df[df['TIPO'] == 'MEDICAMENTO'].index
-        # y = df.loc[m]['CLAVES'].unique()
-    else :# c_selected_type == "Material de Curación"
-        n = df[df['TIPO'] == 'MATERIAL DE CURACIÓN'].index
-        # y = df.loc[mc]['CLAVES'].unique()
-    df = bd.loc[n]
-    
-    
-  
-      #  r = t.intersect(n)
-       # df = bd.loc[r]
     if cl_periodo_input == "BIANUAL":
         df1 = datos_filtradosbi
         df2 = datos_filbi
@@ -370,10 +309,6 @@ with tab1:
         claves_fil = datos_filbi['CLAVES'].unique()
         qprov_fil = datos_filbi['PROVEEDOR'].nunique()
         prov_fil = datos_filbi['PROVEEDOR'].unique() # Filtrar filtros 
-  #      abasto_options = datos_filbi
-   #     clave_options = datos_filbi['CLAVES'].unique()
-    #    type_options = datos_filtradosbi
-        
     elif cl_periodo_input == "2025":
         df1 = datos_filtrados25
         df2 = datos_fil25
@@ -384,10 +319,6 @@ with tab1:
         claves_fil = datos_fil25['CLAVES'].unique()
         qprov_fil = datos_fil25['PROVEEDOR'].nunique()
         prov_fil = datos_fil25['PROVEEDOR'].unique() # Filtrar filtros 
-#        abasto_options = datos_fil25
- #       clave_options = datos_fil25['CLAVES'].unique()
-  #      type_options = datos_filtrados25
-
     else:
         df1 = datos_filtrados26
         df2 = datos_fil26
@@ -398,15 +329,13 @@ with tab1:
         claves_fil = datos_fil26['CLAVES'].unique()
         qprov_fil = datos_fil26['PROVEEDOR'].nunique()
         prov_fil = datos_fil26['PROVEEDOR'].unique() # Filtrar filtros 
- #       abasto_options = datos_fil26
-  #      clave_options = datos_fil26['CLAVES'].unique()
-   #     type_options = datos_filtrados26
         
     # Crear columnas
     col1, col2, col3 = st.columns(3)
     col1.metric("NÚMERO DE PROVEEDORES", f"{qprov_fil}")
     col1.metric("CLAVES ADJUDICADAS", f"{qclaves_fil}")
     col1.metric("IMPORTE TOTAL ADJUDICADO ($)", f"{"{:,.2f}".format(sum(df3["TOTAL"]))}")
+
     # Mostrar gráficos en columnas
     with col1:
         st.header("ABASTO / DESABASTO")
