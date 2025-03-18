@@ -338,11 +338,11 @@ with tab1:
         t = bd.index
     df = bd.loc[t]
     
-    while c_selected_ty != "General":
-        if c_selected_ty == "Medicamento":
+    while c_selected_type != "General":
+        if c_selected_type == "Medicamento":
             n = df[df['TIPO'] == 'MEDICAMENTO'].index
             # y = df.loc[m]['CLAVES'].unique()
-        else :# c_selected_ty == "Material de Curación"
+        else :# c_selected_type == "Material de Curación"
             n = df[df['TIPO'] == 'MATERIAL DE CURACIÓN'].index
             # y = df.loc[mc]['CLAVES'].unique()
         df = bd.loc[n]
