@@ -309,8 +309,17 @@ with tab1:
         c_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="resumen_type")
         c_ty = type_options[c_selected_type]
     with col3:
-        c_clave_input = st.selectbox("Ingrese la clave", list(z.keys()), key="resumen_clave")
-        c_cl = [c_clave_input] if c_clave_input != "TODAS LAS CLAVES" else claves_unicas
+        # Filtrar las claves basadas en la selección de tipo de clave
+        if c_selected_type == "Medicamento":
+            filtered_claves = medicamentos
+        elif c_selected_type == "Material de Curación":
+            filtered_claves = material_curacion
+        else:
+            filtered_claves = claves_unicas
+        
+        clave_options_filtered = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in filtered_claves}}
+        c_clave_input = st.selectbox("Ingrese la clave", list(clave_options_filtered.keys()), key="resumen_clave")
+        c_cl = [c_clave_input] if c_clave_input != "TODAS LAS CLAVES" else filtered_claves
     with col4:
         cl_periodo_input = st.selectbox("Ingrese el periodo de adjudicación", list(periodo_options.keys()), key="resumen_periodo")
 
