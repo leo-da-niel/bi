@@ -335,7 +335,7 @@ with tab1:
         t = bd[bd['ABASTO'] < 1].index
         # x = df.loc[s]['CLAVES'].unique()
     else: 
-        t = db.index
+        t = bd.index
     df = bd.loc[t]
     
     while c_selected_ty != "General":
