@@ -433,6 +433,7 @@ with tab1:
 # Pestaña 2
 with tab2:
     st.header("CCINSHAE")
+    df = bd
 # columnas dashboard
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
