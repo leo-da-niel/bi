@@ -196,7 +196,8 @@ def cloud_bubbles_prov(data):
     )
     
     return fig
-
+# Configuración de la página
+st.set_page_config(page_title="Dashboard", layout="wide")
 
 
 # Pestañas
@@ -295,8 +296,7 @@ with tab1:
      #   y = type_options
     z = clave_options
     p = periodo_options
-    # Configuración de la página
-    st.set_page_config(page_title="Dashboard", layout="wide")
+
     
     # Incluir imagen como encabezado
     st.image("header.png", use_container_width=True)
