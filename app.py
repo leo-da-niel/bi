@@ -493,8 +493,17 @@ with tab2:
         hi_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="instituto_type")
         hi_ty = type_options[hi_selected_type]
     with col3:   
-        hi_clave_input = st.selectbox("Ingrese la clave", list(clave_options.keys()), key="instituto_clave")
-        hi_cl = [hi_clave_input] if hi_clave_input != "TODAS LAS CLAVES" else claves_unicas
+        # Filtrar las claves basadas en la selección de tipo de clave y abastecimiento
+        if hi_selected_type == "Medicamento":
+            hi_filtered_claves = [clave for clave in hi_abastecimiento if clave in medicamentos]
+        elif hi_selected_type == "Material de Curación":
+            hi_filtered_claves = [clave for clave in hi_abastecimiento if clave in material_curacion]
+        else:
+            hi_filtered_claves = hi_abastecimiento
+        
+        hi_options_filtered = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in hi_filtered_claves}}
+        hi_clave_input = st.selectbox("Ingrese la clave", list(hi_options_filtered.keys()), key="instituto_clave")
+        hi_cl = [hi_clave_input] if hi_clave_input != "TODAS LAS CLAVES" else hi_filtered_claves
     with col4:
         hi_selected_instituto = st.selectbox("Ingrese el Instituto:", list(instituto_options.keys()), key="demanda_instituto")
         inst = instituto_options[hi_selected_instituto]
