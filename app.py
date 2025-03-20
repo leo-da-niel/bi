@@ -486,7 +486,6 @@ with tab2:
     hi2 = nonz(rooted(filtrar_inst(inst).iloc[:,[i]]))
     hi3 =nonz(rooted(calcular_monto(filtrar_inst(inst).iloc[:,[i]])))
     hi4 = hi2
-    hi5 = hi4[(hi4['CLAVES'].isin(hi_cl)) & (hi4['CLAVES'].isin(hi_abastecimiento)) & (hi4['CLAVES'].isin(hi_ty))]
     df = hi2
 
     # Variables
@@ -536,7 +535,8 @@ with tab2:
         hi_cl = [hi_clave_input] if hi_clave_input != "TODAS LAS CLAVES" else hi_filtered_claves
     
 
-    
+    hi5 = hi4[(hi4['CLAVES'].isin(hi_cl)) & (hi4['CLAVES'].isin(hi_abastecimiento)) & (hi4['CLAVES'].isin(hi_ty))]
+        
     qclaves_hi = hi5['CLAVES'].nunique()
     claves_hi = hi5['CLAVES'].unique()
     qprov_hi = hi5['PROVEEDOR'].nunique()
