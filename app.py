@@ -504,12 +504,23 @@ with tab2:
     clave_options = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in claves_unicas}}
     proveedor_options = {proveedor: proveedor for proveedor in proveedores_unicos}
     
-    abasto_options = {
-        "General": claves_unicas,
-        "Abastecimiento simultáneo": ab_s,
-        "Abastecimiento único": ab_u
-    }
-    
+    if df[df["ABASTECIMIENTO"]=="ABASTECIMIENTO ÚNICO"]["CLAVES"].nunique()==0:
+        abasto_options = {
+            "General": claves_unicas,
+            "Abastecimiento simultáneo": ab_s
+        }
+    elif df[df["ABASTECIMIENTO"]=="ABASTECIMIENTO SIMULTÁNEO"]["CLAVES"].nunique()==0:
+        abasto_options = {
+            "General": claves_unicas,
+            "Abastecimiento único": ab_u
+        }
+    else:
+        abasto_options = {
+            "General": claves_unicas,
+            "Abastecimiento simultáneo": ab_s,
+            "Abastecimiento único": ab_u
+        }
+   # if df[df["TIPO"]=="MEDICAMENTO"]["CLAVES"].nunique()==0
     type_options = {
         "General": claves_unicas,
         "Medicamento": medicamentos,
