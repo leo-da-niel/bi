@@ -409,20 +409,7 @@ with tab2:
     bi = df5.add(df6.values, fill_value=0)
     bi.columns = [col[:-1] + '5-26' for col in bi.columns]
     
-    # Variables
-    proveedores_unicos = df['PROVEEDOR'].unique()
-    claves_unicas = df['CLAVES'].unique()
-    nproveedores_unicos = df['PROVEEDOR'].nunique()
-    nclaves_unicas = df['CLAVES'].nunique()
-    medicamentos = [clave for clave in claves_unicas if int(clave.split('.')[0]) < 60]
-    material_curacion = [clave for clave in claves_unicas if int(clave.split('.')[0]) >= 60]
-    unico = df[df['ABASTO'] == 1]
-    simultaneo = df[df['ABASTO'] < 1]
-    ab_u = unico['CLAVES'].unique()
-    ab_s = simultaneo['CLAVES'].unique()
     
-    # Opciones
-    clave_options = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in claves_unicas}}
     
     periodo_options = {
     "BIANUAL": "BIANUAL",
@@ -441,19 +428,7 @@ with tab2:
         "CONASAMA": "CONASAMA",
         "PEMEX": "PEMEX"
     }
-    proveedor_options = {proveedor: proveedor for proveedor in proveedores_unicos}
     
-    abasto_options = {
-        "General": claves_unicas,
-        "Abastecimiento simultáneo": ab_s,
-        "Abastecimiento único": ab_u
-    }
-    
-    type_options = {
-        "General": claves_unicas,
-        "Medicamento": medicamentos,
-        "Material de Curación": material_curacion
-    }
     
     df25 = pd.concat([df5, totales(df5)], axis=1)
     df26 = pd.concat([df6, totales(df6)], axis=1)
@@ -487,30 +462,11 @@ with tab2:
 # columnas dashboard
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
-        hi_selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="instituto_abasto")
-        hi_abastecimiento = abasto_options[hi_selected_abasto]
-    with col2:    
-        hi_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="instituto_type")
-        hi_ty = type_options[hi_selected_type]
-    with col3:   
-        # Filtrar las claves basadas en la selección de tipo de clave y abastecimiento
-        if hi_selected_type == "Medicamento":
-            hi_filtered_claves = [clave for clave in hi_abastecimiento if clave in medicamentos]
-        elif hi_selected_type == "Material de Curación":
-            hi_filtered_claves = [clave for clave in hi_abastecimiento if clave in material_curacion]
-        else:
-            hi_filtered_claves = hi_abastecimiento
-        
-        hi_options_filtered = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in hi_filtered_claves}}
-        hi_clave_input = st.selectbox("Ingrese la clave", list(hi_options_filtered.keys()), key="instituto_clave")
-        hi_cl = [hi_clave_input] if hi_clave_input != "TODAS LAS CLAVES" else hi_filtered_claves
-    with col4:
         hi_selected_instituto = st.selectbox("Ingrese el Instituto:", list(instituto_options.keys()), key="demanda_instituto")
         inst = instituto_options[hi_selected_instituto]
-    with col5:
+    with col2:
         hi_periodo_input = st.selectbox("Ingrese el periodo de adjudicación", list(periodo_options.keys()), key="instituto_periodo")
-      # Filtrar datos
-
+          # Filtrar datos
     if hi_periodo_input == "BIANUAL":
         hi1T = "CANTIDADES BIANUAL"
         hi2T = "IMPORTE BIANUAL"
@@ -531,6 +487,55 @@ with tab2:
     hi3 =nonz(rooted(calcular_monto(filtrar_inst(inst).iloc[:,[i]])))
     hi4 = hi2
     hi5 = hi4[(hi4['CLAVES'].isin(hi_cl)) & (hi4['CLAVES'].isin(hi_abastecimiento)) & (hi4['CLAVES'].isin(hi_ty))]
+    df = hi2
+
+    # Variables
+    proveedores_unicos = df['PROVEEDOR'].unique()
+    claves_unicas = df['CLAVES'].unique()
+    nproveedores_unicos = df['PROVEEDOR'].nunique()
+    nclaves_unicas = df['CLAVES'].nunique()
+    medicamentos = [clave for clave in claves_unicas if int(clave.split('.')[0]) < 60]
+    material_curacion = [clave for clave in claves_unicas if int(clave.split('.')[0]) >= 60]
+    unico = df[df['ABASTO'] == 1]
+    simultaneo = df[df['ABASTO'] < 1]
+    ab_u = unico['CLAVES'].unique()
+    ab_s = simultaneo['CLAVES'].unique()
+    
+    # Opciones
+    clave_options = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in claves_unicas}}
+    proveedor_options = {proveedor: proveedor for proveedor in proveedores_unicos}
+    
+    abasto_options = {
+        "General": claves_unicas,
+        "Abastecimiento simultáneo": ab_s,
+        "Abastecimiento único": ab_u
+    }
+    
+    type_options = {
+        "General": claves_unicas,
+        "Medicamento": medicamentos,
+        "Material de Curación": material_curacion
+    }
+    with col3:
+        hi_selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="instituto_abasto")
+        hi_abastecimiento = abasto_options[hi_selected_abasto]
+    with col4:    
+        hi_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="instituto_type")
+        hi_ty = type_options[hi_selected_type]
+    with col5:   
+        # Filtrar las claves basadas en la selección de tipo de clave y abastecimiento
+        if hi_selected_type == "Medicamento":
+            hi_filtered_claves = [clave for clave in hi_abastecimiento if clave in medicamentos]
+        elif hi_selected_type == "Material de Curación":
+            hi_filtered_claves = [clave for clave in hi_abastecimiento if clave in material_curacion]
+        else:
+            hi_filtered_claves = hi_abastecimiento
+        
+        hi_options_filtered = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in hi_filtered_claves}}
+        hi_clave_input = st.selectbox("Ingrese la clave", list(hi_options_filtered.keys()), key="instituto_clave")
+        hi_cl = [hi_clave_input] if hi_clave_input != "TODAS LAS CLAVES" else hi_filtered_claves
+    
+
     
     qclaves_hi = hi5['CLAVES'].nunique()
     claves_hi = hi5['CLAVES'].unique()
