@@ -11,22 +11,22 @@ import matplotlib.ticker as ticker
 
 # Definimos funciones de Cálculo
 
-def filtro_simul(x,y):
+def filtro_simul(x,y,de):
     if x!="GENERAL":
         di = de.loc[de.ABASTECIMIENTO==x].index
     else:
         di = de
     dg = de.loc[di]
     if y!="GENERAL":
-        df = dg[dg["TIPO"]==y]
+        dh = dg[dg["TIPO"]==y]
     else:
-        df = dg
-    if df[df["ABASTECIMIENTO"]=="ABASTECIMIENTO ÚNICO"]["CLAVES"].nunique()==0:
+        dh = dg
+    if dh[dh["ABASTECIMIENTO"]=="ABASTECIMIENTO ÚNICO"]["CLAVES"].nunique()==0:
         abasto_options = {
             "General": claves_unicas,
             "Abastecimiento simultáneo": ab_s
         }
-    elif df[df["ABASTECIMIENTO"]=="ABASTECIMIENTO SIMULTÁNEO"]["CLAVES"].nunique()==0:
+    elif dh[dh["ABASTECIMIENTO"]=="ABASTECIMIENTO SIMULTÁNEO"]["CLAVES"].nunique()==0:
         abasto_options = {
             "General": claves_unicas,
             "Abastecimiento único": ab_u
@@ -37,12 +37,12 @@ def filtro_simul(x,y):
             "Abastecimiento simultáneo": ab_s,
             "Abastecimiento único": ab_u
         }
-    if df[df["TIPO"]=="MEDICAMENTO"]["CLAVES"].nunique()==0:
+    if dh[dh["TIPO"]=="MEDICAMENTO"]["CLAVES"].nunique()==0:
         type_options = {
             "General": claves_unicas,
             "Material de Curación": material_curacion
         }
-    elif df[df["TIPO"]=="MATERIAL DE CURACIÓN"]["CLAVES"].nunique()==0:
+    elif dh[dh["TIPO"]=="MATERIAL DE CURACIÓN"]["CLAVES"].nunique()==0:
         type_options = {
             "General": claves_unicas,
             "Medicamento": medicamentos,
@@ -571,7 +571,7 @@ with tab2:
         hi_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="instituto_type")
         hi_ty = type_options[hi_selected_type]
     # Actualizar las opciones de abasto y tipo de clave en función de las selecciones
-    abasto_options, type_options = filtro_simul(hi_selected_abasto, hi_selected_type, df_filtrado, claves_unicas, ab_s, ab_u, medicamentos, material_curacion)
+    abasto_options, type_options = filtro_simul(hi_selected_abasto, hi_selected_type, df)
 
     with col5:   
         # Filtrar las claves basadas en la selección de tipo de clave y abastecimiento
