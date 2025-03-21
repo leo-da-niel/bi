@@ -10,6 +10,52 @@ import matplotlib.ticker as ticker
 
 
 # Definimos funciones de Cálculo
+
+def filtro_simul(x,y):
+    if x!="GENERAL":
+        di = de.loc[de.ABASTECIMIENTO==x].index
+    else:
+        di = de
+    dg = de.loc[di]
+    if y!="GENERAL":
+        df = dg[dg["TIPO"]==y]
+    else:
+        df = dg
+    if df[df["ABASTECIMIENTO"]=="ABASTECIMIENTO ÚNICO"]["CLAVES"].nunique()==0:
+        abasto_options = {
+            "General": claves_unicas,
+            "Abastecimiento simultáneo": ab_s
+        }
+    elif df[df["ABASTECIMIENTO"]=="ABASTECIMIENTO SIMULTÁNEO"]["CLAVES"].nunique()==0:
+        abasto_options = {
+            "General": claves_unicas,
+            "Abastecimiento único": ab_u
+        }
+    else:
+        abasto_options = {
+            "General": claves_unicas,
+            "Abastecimiento simultáneo": ab_s,
+            "Abastecimiento único": ab_u
+        }
+    if df[df["TIPO"]=="MEDICAMENTO"]["CLAVES"].nunique()==0:
+        type_options = {
+            "General": claves_unicas,
+            "Material de Curación": material_curacion
+        }
+    elif df[df["TIPO"]=="MATERIAL DE CURACIÓN"]["CLAVES"].nunique()==0:
+        type_options = {
+            "General": claves_unicas,
+            "Medicamento": medicamentos,
+            "Material de Curación": material_curacion
+        }
+    else: 
+        type_options = {
+            "General": claves_unicas,
+            "Medicamento": medicamentos,
+            "Material de Curación": material_curacion
+        }
+    return abasto_options, type_options
+
 def calcular_monto(data):
     data_monto = pd.DataFrame()
     for col in data.columns:
@@ -504,45 +550,29 @@ with tab2:
     clave_options = {"TODAS LAS CLAVES": "General", **{clave: clave for clave in claves_unicas}}
     proveedor_options = {proveedor: proveedor for proveedor in proveedores_unicos}
     
-    if df[df["ABASTECIMIENTO"]=="ABASTECIMIENTO ÚNICO"]["CLAVES"].nunique()==0:
-        abasto_options = {
-            "General": claves_unicas,
-            "Abastecimiento simultáneo": ab_s
-        }
-    elif df[df["ABASTECIMIENTO"]=="ABASTECIMIENTO SIMULTÁNEO"]["CLAVES"].nunique()==0:
-        abasto_options = {
-            "General": claves_unicas,
-            "Abastecimiento único": ab_u
-        }
-    else:
-        abasto_options = {
-            "General": claves_unicas,
-            "Abastecimiento simultáneo": ab_s,
-            "Abastecimiento único": ab_u
-        }
-    if df[df["TIPO"]=="MEDICAMENTO"]["CLAVES"].nunique()==0:
-        type_options = {
-            "General": claves_unicas,
-            "Material de Curación": material_curacion
-        }
-    elif df[df["TIPO"]=="MATERIAL DE CURACIÓN"]["CLAVES"].nunique()==0:
-        type_options = {
-            "General": claves_unicas,
-            "Medicamento": medicamentos,
-            "Material de Curación": material_curacion
-        }
-    else: 
-        type_options = {
-            "General": claves_unicas,
-            "Medicamento": medicamentos,
-            "Material de Curación": material_curacion
-        }
+    # Inicializar las opciones de abasto y tipo de clave
+    abasto_options = {
+        "General": claves_unicas,
+        "Abastecimiento simultáneo": ab_s,
+        "Abastecimiento único": ab_u
+    }
+    
+    type_options = {
+        "General": claves_unicas,
+        "Medicamento": medicamentos,
+        "Material de Curación": material_curacion
+    }
+    
     with col3:
         hi_selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="instituto_abasto")
         hi_abastecimiento = abasto_options[hi_selected_abasto]
-    with col4:    
+    
+    with col4:
         hi_selected_type = st.selectbox("Ingrese el tipo de clave", list(type_options.keys()), key="instituto_type")
         hi_ty = type_options[hi_selected_type]
+    # Actualizar las opciones de abasto y tipo de clave en función de las selecciones
+    abasto_options, type_options = filtro_simul(hi_selected_abasto, hi_selected_type, df_filtrado, claves_unicas, ab_s, ab_u, medicamentos, material_curacion)
+
     with col5:   
         # Filtrar las claves basadas en la selección de tipo de clave y abastecimiento
         if hi_selected_type == "Medicamento":
