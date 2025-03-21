@@ -525,7 +525,7 @@ with tab2:
             "General": claves_unicas,
             "Material de Curación": material_curacion
         }
-    elif: df[df["TIPO"]=="MATERIAL DE CURACIÓN"]["CLAVES"].nunique()==0:
+    elif df[df["TIPO"]=="MATERIAL DE CURACIÓN"]["CLAVES"].nunique()==0:
         type_options = {
             "General": claves_unicas,
             "Medicamento": medicamentos,
