@@ -537,7 +537,7 @@ with tab2:
             "Medicamento": medicamentos,
             "Material de Curación": material_curacion
         }
-        with col3:
+    with col3:
         hi_selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="instituto_abasto")
         hi_abastecimiento = abasto_options[hi_selected_abasto]
     with col4:    
