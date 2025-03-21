@@ -520,13 +520,24 @@ with tab2:
             "Abastecimiento simultáneo": ab_s,
             "Abastecimiento único": ab_u
         }
-   # if df[df["TIPO"]=="MEDICAMENTO"]["CLAVES"].nunique()==0
-    type_options = {
-        "General": claves_unicas,
-        "Medicamento": medicamentos,
-        "Material de Curación": material_curacion
-    }
-    with col3:
+    if df[df["TIPO"]=="MEDICAMENTO"]["CLAVES"].nunique()==0:
+        type_options = {
+            "General": claves_unicas,
+            "Material de Curación": material_curacion
+        }
+    elif: df[df["TIPO"]=="MATERIAL DE CURACIÓN"]["CLAVES"].nunique()==0:
+        type_options = {
+            "General": claves_unicas,
+            "Medicamento": medicamentos,
+            "Material de Curación": material_curacion
+        }
+    else: 
+        type_options = {
+            "General": claves_unicas,
+            "Medicamento": medicamentos,
+            "Material de Curación": material_curacion
+        }
+        with col3:
         hi_selected_abasto = st.selectbox("Ingrese tipo de abastecimiento", list(abasto_options.keys()), key="instituto_abasto")
         hi_abastecimiento = abasto_options[hi_selected_abasto]
     with col4:    
